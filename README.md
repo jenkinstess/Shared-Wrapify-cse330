@@ -2,13 +2,13 @@
 473307
 474201
 
-###Rubric
+### Rubric
 
-#####Rubric turned in on time (5 points)
+##### Rubric turned in on time (5 points)
 
 Get rubric approved by TA
 
-#####Languages/Frameworks used (30 points)
+##### Languages/Frameworks used (30 points)
 
 10 - Learned/Used React.js 
 
@@ -20,7 +20,7 @@ Get rubric approved by TA
 
 0   - NodeJS and Javascript
 
-####Functionality (50 points)
+#### Functionality (50 points)
 
 5 Users can log in to site
 
@@ -37,19 +37,19 @@ Get rubric approved by TA
 10 Can "suggest” playlist of one user to another user based on shared artists
 
 
-#####Best Practices (5 points)
+##### Best Practices (5 points)
 
 3 Code is readable and well formatted
 
 2 All pages pass the html validator
 
 
-#####Stying (5 points)
+##### tying (5 points)
 
 5 at least 2 animations are implemented 
 
 
-#####Creative Portion (20 points)
+##### Creative Portion (20 points)
 
 TA approval:
 Clay Mudter
