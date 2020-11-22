@@ -5,17 +5,25 @@
 **Rubric**
 
 Rubric turned in on time (5 points)
+
 Get rubric approved by TA
 
 Languages/Frameworks used (30 points)
+
 10 - Learned/Used React.js 
+
 10 - Learned/Used Express
+
 10 - Used Spotify API
+
 0- Learned/Used MySql
+
 0   - NodeJS and Javascript
 
 Functionality (50 points)
+
 5 Users can log in to site
+
 5 User can click to view their top artists/genres
 5 User can view their own music “moods” 
 1pt (Each): accousticness, danceability, liveliness, energy, and loudness
