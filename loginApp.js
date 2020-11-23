@@ -7,6 +7,10 @@
  * https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow
  */
 
+ //just need to cite their code
+ // put link of page in readme and in comments here
+ //put the citation in readme and state
+
 var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var cors = require('cors');
