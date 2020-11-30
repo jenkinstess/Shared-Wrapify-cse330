@@ -22,7 +22,7 @@ var cookieParser = require('cookie-parser');
 var client_id = 'd5d8b190822442ae885392711408e301'; // Your client id
 var client_secret = '9074cb242093480fa3d6b61b8c104d35'; // Your secret
 //console.log("b");
-var redirect_uri = 'http://ec2-54-236-53-54.compute-1.amazonaws.com:3456/index.html'; // Your redirect uri
+var redirect_uri = 'http://ec2-54-236-53-54.compute-1.amazonaws.com:3456/home'; // Your redirect uri
 //console.log("c");
 
 /**
@@ -49,6 +49,16 @@ var app = express();
 app.use(express.static(__dirname + '/public'))
    .use(cors())
    .use(cookieParser());
+
+app.get('/home', (req, res) => {
+  res.send("worked")
+  // user registers for site here?
+  //    input username and pw for our site
+  // sends this data to homePage.html
+  //connect to the html page here
+  //send data here to html page
+
+})   
 
 app.get('/login', function(req, res) {
 
