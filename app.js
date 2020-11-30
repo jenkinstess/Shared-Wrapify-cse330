@@ -17,15 +17,21 @@ var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 
+//console.log("a");
+
 var client_id = 'd5d8b190822442ae885392711408e301'; // Your client id
 var client_secret = '9074cb242093480fa3d6b61b8c104d35'; // Your secret
-var redirect_uri = 'http://ec2-54-236-53-54.compute-1.amazonaws.com:3456/loginAuthorization.html'; // Your redirect uri
+//console.log("b");
+var redirect_uri = 'http://ec2-54-236-53-54.compute-1.amazonaws.com:3456/index.html'; // Your redirect uri
+//console.log("c");
 
 /**
  * Generates a random string containing numbers and letters
  * @param  {number} length The length of the string
  * @return {string} The generated string
  */
+//console.log("d");
+
 var generateRandomString = function(length) {
   var text = '';
   var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
