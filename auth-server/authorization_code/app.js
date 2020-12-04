@@ -15,7 +15,7 @@ var cookieParser = require('cookie-parser');
 
 var client_id = 'd5d8b190822442ae885392711408e301'; // Your client id
 var client_secret = '9074cb242093480fa3d6b61b8c104d35'; // Your secret
-var redirect_uri = 'http://ec2-54-236-53-54.compute-1.amazonaws.com:3456/callback'; // Your redirect uri
+var redirect_uri = 'http://localhost:3456/callback'; // Your redirect uri
 
 /**
  * Generates a random string containing numbers and letters
@@ -104,7 +104,7 @@ app.get('/callback', function(req, res) {
         });
 
         // we can also pass the token to the browser to make requests from there
-        res.redirect('http://ec2-54-236-53-54.compute-1.amazonaws.com:3000/#' +
+        res.redirect('https://localhost:3000/#' +
           querystring.stringify({
             access_token: access_token,
             refresh_token: refresh_token
