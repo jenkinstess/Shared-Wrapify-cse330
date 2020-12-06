@@ -11,9 +11,13 @@ class App extends Component{
     const params= this.getHashParams(); //gives obj that has access and refresh tokens
     this.state={
       loggedIn: params.access_token ? true : false, //checks if access token is set or not to see if logged in 
-      nowPlaying:{
-        name: 'Not Checked',
-        image: ''
+      // nowPlaying:{
+      //   name: 'Not Checked',
+      //   image: ''
+      // },
+      savedTracks:{
+        nameTrack1:'TBD',
+        //nameTrack2:'TBD'
       }
     }
     if (params.access_token){
@@ -29,17 +33,29 @@ class App extends Component{
     }
     return hashParams;
   }
-getNowPlaying() { //can alter this function and make more like it, using diff calls after spotifyWebApi.
-  spotifyWebApi.getMyCurrentPlaybackState()
-  .then((response)=>{
-      this.setState({
-        nowPlaying:{
-        name:response.item.name,  // .item is used to access variables
-        image: response.item.album.images[0].url //img not displaying
-      }
-    })
-  })
-}
+  // getNowPlaying() { //can alter this function and make more like it, using diff calls after spotifyWebApi.
+  //   spotifyWebApi.getMyCurrentPlaybackState()
+  //   .then((response)=>{
+  //       this.setState({
+  //         nowPlaying:{
+  //         name:response.item.name,  // .item is used to access variables
+  //         image: response.item.album.images[0].url //img not displaying
+  //       }
+  //     })
+  //   })
+  // }
+
+  getSavedTracks(){
+    spotifyWebApi.getMySavedTracks()
+    .then((response)=>{
+        this.setState({
+          savedTracks:{
+            nameTrack1: response.item.name,
+            //nameTrack2: response.item.name[1]
+          }
+        })
+      })
+    }
 
   render(){
   return (
@@ -47,13 +63,22 @@ getNowPlaying() { //can alter this function and make more like it, using diff ca
       <a href='http://localhost:3456'>
       <button>Login with Spotify</button>
       </a>
-    <div>Now Playing: {this.state.nowPlaying.name}</div>
+   
+   {/* <div>Now Playing: {this.state.nowPlaying.name}</div>
     <div>
       <img stc={this.state.nowPlaying.image} syle={{width: 100}}/>
     </div>
     <button onClick={() => this.getNowPlaying()}>
       Check Now Playing 
-      </button> 
+    </button>  */}
+   
+    <div>First saved Track: {this.state.savedTracks.nameTrack1}</div>
+    {/* <div>Second saved Track: {this.state.savedTracks.nameTrack2}</div> */}
+    
+    <button onClick={() => this.getSavedTracks()}>
+      See first two saved tracks!
+    </button> 
+
     </div>
   );
   }
