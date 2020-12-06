@@ -46,7 +46,7 @@ app.get('/login', function(req, res) {
   res.cookie(stateKey, state);
 
   // your application requests authorization
-  var scope = 'user-read-private user-read-email user-read-playback-state'; //(min 14 of vid)from what it seems, we have to update permissions here if we want to extract diff/more data
+  var scope = 'user-read-private user-read-email user-read-playback-state user-library-read'; //(min 14 of vid)from what it seems, we have to update permissions here if we want to extract diff/more data
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',
