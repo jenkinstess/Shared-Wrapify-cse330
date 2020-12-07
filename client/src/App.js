@@ -19,6 +19,7 @@ class App extends Component{
         nameTrack1:'TBD'
         //nameTrack2:'TBD'
       }
+      //have view set here
     }
     if (params.access_token){
       spotifyWebApi.setAccessToken(params.access_token);
@@ -48,7 +49,7 @@ class App extends Component{
   getSavedTracks(){
     spotifyWebApi.getMySavedTracks()
     .then((response)=>{
-        this.setState({
+        this.setState({ //can change any state variables here, change view here
           savedTracks:{
             nameTrack1: response.items[0].track.name
             //nameTrack2: response.item.name[1]
@@ -59,6 +60,14 @@ class App extends Component{
 
   render(){
   return (
+
+    //use conditional rendering
+    //how to change eveythng on site, look at react.js.com
+    //app component is whole page
+    // one state component could be the view we're loking at
+    // can have state initially set to log in, so for render we can have if statements to control what is displayed on front end
+    //ie if(this.state=)
+    //change page by changing diff state variables
     <div className="App">
       <a href='http://localhost:3456'>
       <button>Login with Spotify</button>

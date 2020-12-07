@@ -36,6 +36,11 @@ var stateKey = 'spotify_auth_state';
 
 var app = express();
 
+app.get('webLogin', function(req, res){
+  var username=req.username;
+  console.log(username);
+});
+
 app.use(express.static(__dirname + '/public'))
    .use(cors())
    .use(cookieParser());
@@ -91,6 +96,7 @@ app.get('/callback', function(req, res) {
 
         var access_token = body.access_token,
             refresh_token = body.refresh_token;
+          //set access and refresh tokens here for database
 
         var options = {
           url: 'https://api.spotify.com/v1/me',
@@ -139,6 +145,7 @@ app.get('/refresh_token', function(req, res) {
       res.send({
         'access_token': access_token
       });
+      //make sure to update access and resfresh tokens in database here
     }
   });
 });
