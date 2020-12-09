@@ -46,7 +46,7 @@ class App extends Component{
   //   })
   // }
 
-  getSavedTracks(){
+  getSavedTracks(){  
     spotifyWebApi.getMySavedTracks()
     .then((response)=>{
         this.setState({ //can change any state variables here, change view here
@@ -58,8 +58,13 @@ class App extends Component{
       })
     }
 
-  render(){
-  return (
+    //in here for checking state in if statements, need to declare shared state in parent component (i think we already do this in the constructor)
+ // state is considered to be private to the component that defines it
+    //use onClick for user to click when they want to view top artist, genres, compare w other users
+
+    
+  render(){ 
+  return (  
 
     //use conditional rendering
     //how to change eveythng on site, look at react.js.com
