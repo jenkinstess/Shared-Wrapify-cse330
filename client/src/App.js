@@ -35,6 +35,7 @@ class App extends Component{
   }
   handleSubmit(event){
     alert('A name was submitted: ' + this.state.webLogin); //to test and see what value was submitted
+    //store state.weblogin in database here
     event.preventDefault();
   }
 
