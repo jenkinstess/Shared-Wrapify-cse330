@@ -61,8 +61,8 @@ class App extends Component{
     //in here for checking state in if statements, need to declare shared state in parent component (i think we already do this in the constructor)
  // state is considered to be private to the component that defines it
     //use onClick for user to click when they want to view top artist, genres, compare w other users
+    //how to communicate parent and child, alter things with different states
 
-    
   render(){ 
   return (  
 
