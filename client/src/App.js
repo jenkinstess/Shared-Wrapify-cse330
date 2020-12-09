@@ -11,6 +11,7 @@ class App extends Component{
     const params= this.getHashParams(); //gives obj that has access and refresh tokens
     this.state={
       loggedIn: params.access_token ? true : false, //checks if access token is set or not to see if logged in 
+      webLogin:'tbd',
       // nowPlaying:{
       //   name: 'Not Checked',
       //   image: ''
@@ -20,11 +21,22 @@ class App extends Component{
         //nameTrack2:'TBD'
       }
       //have view set here
-    }
+    };
+    this.handleChange=this.handleChange.bind(this);
+    this.handleSubmit=this.handleSubmit.bind(this);
     if (params.access_token){
       spotifyWebApi.setAccessToken(params.access_token);
     }
   }
+
+  handleChange(event){
+    this.setState({webLogin: event.target.webLogin});
+  }
+  handleSubmit(event){
+    alert('A name was submitted: ' + this.state.webLogin); //to test and see what value was submitted
+    event.preventDefault();
+  }
+
   getHashParams() {
     var hashParams = {};
     var e, r = /([^&;=]+)=?([^&;]*)/g,
@@ -64,37 +76,53 @@ class App extends Component{
     //how to communicate parent and child, alter things with different states
 
   render(){ 
-  return (  
 
-    //use conditional rendering
-    //how to change eveythng on site, look at react.js.com
-    //app component is whole page
-    // one state component could be the view we're loking at
-    // can have state initially set to log in, so for render we can have if statements to control what is displayed on front end
-    //ie if(this.state=)
-    //change page by changing diff state variables
+
+    return (  
     <div className="App">
-      <a href='http://localhost:3456'>
-      <button>Login with Spotify</button>
-      </a>
-   
-   {/* <div>Now Playing: {this.state.nowPlaying.name}</div>
-    <div>
-      <img stc={this.state.nowPlaying.image} syle={{width: 100}}/>
-    </div>
-    <button onClick={() => this.getNowPlaying()}>
-      Check Now Playing 
-    </button>  */}
-   
-    <div>First saved Track: {this.state.savedTracks.nameTrack1}</div>
-    {/* <div>Second saved Track: {this.state.savedTracks.nameTrack2}</div> */}
-    
-    <button onClick={() => this.getSavedTracks()}>
-      See first two saved tracks!
-    </button> 
+      <div id='OURwebpageLogin'>
+        Enter your spotify username (note that this should NOT be your email)
+      <form onSubmit={this.handleSubmit}>
+          <label>
+            Username:
+            <input type="text" value={this.state.webLogin}  onChange={this.handleChange}/>
+          </label>
+          <input type="submit" value="Submit" />
+        </form>
+      </div>
 
-    </div>
-  );
+      {/* //use conditional rendering
+      //how to change eveythng on site, look at react.js.com
+      //app component is whole page
+      // one state component could be the view we're loking at
+      // can have state initially set to log in, so for render we can have if statements to control what is displayed on front end
+      //ie if(this.state=)
+      //change page by changing diff state variables */}
+      <div id='routToSpotify'>
+        
+        <a href='http://localhost:3456'>
+        <button>Login with Spotify</button>
+        </a>
+      </div>
+    
+    {/* <div>Now Playing: {this.state.nowPlaying.name}</div>
+      <div>
+        <img stc={this.state.nowPlaying.image} syle={{width: 100}}/>
+      </div>
+      <button onClick={() => this.getNowPlaying()}>
+        Check Now Playing 
+      </button>  */}
+    
+      <div id= '12SavedTracks'>First saved Track: {this.state.savedTracks.nameTrack1}</div>
+      {/* <div>Second saved Track: {this.state.savedTracks.nameTrack2}</div> */}
+      <div id='butSavedTracks'>
+        <button onClick={() => this.getSavedTracks()}>
+          See first two saved tracks!
+        </button> 
+      </div>
+
+      </div>
+    );
   }
 }
 

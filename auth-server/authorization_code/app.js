@@ -36,10 +36,10 @@ var stateKey = 'spotify_auth_state';
 
 var app = express();
 
-app.get('webLogin', function(req, res){
-  var username=req.username;
-  console.log(username);
-});
+// app.get('webLogin', function(req, res){
+//   var username=req.username;
+//   console.log(username);
+// });
 
 app.use(express.static(__dirname + '/public'))
    .use(cors())
