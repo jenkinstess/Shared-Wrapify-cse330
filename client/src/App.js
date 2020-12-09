@@ -30,7 +30,8 @@ class App extends Component{
   }
 
   handleChange(event){
-    this.setState({webLogin: event.target.webLogin});
+    console.log(event.target.value); //console logging state can be unreliable bc react doesnt always do things in order
+    this.setState({webLogin: event.target.value});
   }
   handleSubmit(event){
     alert('A name was submitted: ' + this.state.webLogin); //to test and see what value was submitted
@@ -85,7 +86,8 @@ class App extends Component{
       <form onSubmit={this.handleSubmit}>
           <label>
             Username:
-            <input type="text" value={this.state.webLogin}  onChange={this.handleChange}/>
+            <input type="text" value={this.state.webLogin}  onChange={this.handleChange}/> 
+            {/* target is the input that triggered this function. for diff forms would have dif handleChange functions, handleCHange1, etc */}
           </label>
           <input type="submit" value="Submit" />
         </form>
