@@ -12,6 +12,7 @@ let db_spotifyShared=new sqlite3.Database('./spotifyShared.db', sqlite3.OPEN_REA
   console.log('Connected to the spotifyShared database.');
 });
 
+// Jamie test git push
 const spotifyWebApi = new Spotify();
 
 class App extends Component{
