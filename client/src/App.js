@@ -84,7 +84,8 @@ class App extends Component{
             nameTrack1: response.items[0].track.name
             //nameTrack2: response.item.name[1]
           }
-        })
+        }) //send data from state to database, make sure data properly sends to back end, then store data in database, then send like success message to say data was properly stored
+        // look into firebase
       })
     }
 
@@ -100,7 +101,7 @@ class App extends Component{
     <div className="App">
       <div id='OURwebpageLogin'>
         Enter your spotify username (note that this should NOT be your email)
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit}> 
           <label>
             Username:
             <input type="text" value={this.state.webLogin}  onChange={this.handleChange}/> 
@@ -109,6 +110,15 @@ class App extends Component{
           <input type="submit" value="Submit" />
         </form>
       </div>
+      {/* pass form data to back-end,  */}
+
+
+      {/* take form data wrap in form request to back end, back end verify 
+      rather than directly modifying state, 
+      pass to backend, backend pass to front end
+      user hits login. 
+      
+      store data in database in back end */}
 
       {/* //use conditional rendering
       //how to change eveythng on site, look at react.js.com
