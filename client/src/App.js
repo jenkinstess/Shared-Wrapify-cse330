@@ -22,15 +22,21 @@ class App extends Component{
     this.state={
       loggedIn: params.access_token ? true : false, //checks if access token is set or not to see if logged in 
       webLogin:'tbd',
-      // nowPlaying:{
-      //   name: 'Not Checked',
-      //   image: ''
-      // },
+
+      nowPlaying:{
+        name: 'TBD',
+        image: ''
+      },
+
       savedTracks:{
         nameTrack1:'TBD'
         //nameTrack2:'TBD'
-      }
-      //have view set here
+      },
+      
+      nameTopArtist:{
+        name:'TBD',
+      },
+     // have view set here
     };
     this.handleChange=this.handleChange.bind(this);
     this.handleSubmit=this.handleSubmit.bind(this);
@@ -64,17 +70,17 @@ class App extends Component{
     }
     return hashParams;
   }
-  // getNowPlaying() { //can alter this function and make more like it, using diff calls after spotifyWebApi.
-  //   spotifyWebApi.getMyCurrentPlaybackState()
-  //   .then((response)=>{
-  //       this.setState({
-  //         nowPlaying:{
-  //         name:response.item.name,  // .item is used to access variables
-  //         image: response.item.album.images[0].url //img not displaying
-  //       }
-  //     })
-  //   })
-  // }
+  getNowPlaying() { //can alter this function and make more like it, using diff calls after spotifyWebApi.
+    spotifyWebApi.getMyCurrentPlaybackState()
+    .then((response)=>{
+        this.setState({
+          nowPlaying:{
+          name:response.item.name,  // .item is used to access variables
+          image:response.item.album.images[0].url //img not displaying
+        }
+      })
+    })
+  }
 
   getSavedTracks(){  
     spotifyWebApi.getMySavedTracks()
@@ -89,6 +95,19 @@ class App extends Component{
       })
     }
 
+  getTopArtists(){
+    spotifyWebApi.getMyTopArtists()
+    .then((response)=>{
+    this.setState({ 
+      TopArtists:{
+        nameTopArtist: response.items[0].track.artists[0].name
+        
+      }
+    }) 
+  })
+  }
+  
+
     //in here for checking state in if statements, need to declare shared state in parent component (i think we already do this in the constructor)
  // state is considered to be private to the component that defines it
     //use onClick for user to click when they want to view top artist, genres, compare w other users
@@ -98,6 +117,7 @@ class App extends Component{
 
 
     return (  
+
     <div className="App">
       <div id='OURwebpageLogin'>
         Enter your spotify username (note that this should NOT be your email)
@@ -127,6 +147,7 @@ class App extends Component{
       // can have state initially set to log in, so for render we can have if statements to control what is displayed on front end
       //ie if(this.state=)
       //change page by changing diff state variables */}
+
       <div id='routToSpotify'>
         
         <a href='http://localhost:3456'>
@@ -134,19 +155,26 @@ class App extends Component{
         </a>
       </div>
     
-    {/* <div>Now Playing: {this.state.nowPlaying.name}</div>
+    <div>Now Playing: {this.state.nowPlaying.name}</div>
       <div>
-        <img stc={this.state.nowPlaying.image} syle={{width: 100}}/>
+        <img src={this.state.nowPlaying.image} syle={{width: 100}}/>
       </div>
       <button onClick={() => this.getNowPlaying()}>
         Check Now Playing 
-      </button>  */}
+      </button> 
     
       <div id= '12SavedTracks'>First saved Track: {this.state.savedTracks.nameTrack1}</div>
       {/* <div>Second saved Track: {this.state.savedTracks.nameTrack2}</div> */}
       <div id='butSavedTracks'>
         <button onClick={() => this.getSavedTracks()}>
-          See first two saved tracks!
+          See first saved track!
+        </button> 
+      </div>
+
+      <div id = 'UsersTopArtists'> Your Top Artists: {this.state.nameTopArtist.name} </div>
+      <div id='butTopArtists'>
+        <button onClick={() => this.getTopArtists()}>
+          See your top artists!
         </button> 
       </div>
 
