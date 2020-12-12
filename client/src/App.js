@@ -4,13 +4,13 @@ import './App.css';
 import Spotify from 'spotify-web-api-js';
 
 //connects to sqlite3, opens the spotifyShared.db that contains tables storing pertinent info
-let sqlite3 = require('sqlite3').verbose();
-let db_spotifyShared=new sqlite3.Database('./spotifyShared.db', sqlite3.OPEN_READWRITE,(err)=>{
-  if(err){
-    console.error(err.message);
-  }
-  console.log('Connected to the spotifyShared database.');
-});
+// let sqlite3 = require('sqlite3').verbose();
+// let db_spotifyShared=new sqlite3.Database('./spotifyShared.db', sqlite3.OPEN_READWRITE,(err)=>{
+//   if(err){
+//     console.error(err.message);
+//   }
+//   console.log('Connected to the spotifyShared database.');
+// });
 
 // Jamie test git push
 const spotifyWebApi = new Spotify();
@@ -46,12 +46,12 @@ class App extends Component{
   handleSubmit(event){
     alert('A name was submitted: ' + this.state.webLogin); //to test and see what value was submitted
     //store state.weblogin in database here
-    db_spotifyShared.run('INSERT INTO user_info(username) VALUES(?)', [this.state.webLogin], function(err){
-      if(err){
-        return console.log(err.message);
-      }
-      console.log(`A row has been inserted with rowid ${this.lastID}`);
-    });
+    // db_spotifyShared.run('INSERT INTO user_info(username) VALUES(?)', [this.state.webLogin], function(err){
+    //   if(err){
+    //     return console.log(err.message);
+    //   }
+    //   console.log(`A row has been inserted with rowid ${this.lastID}`);
+    // });
     event.preventDefault();
   }
 
@@ -187,12 +187,12 @@ class App extends Component{
 // }
 
 //closes database
-db_spotifyShared.close((err) => {
-  if (err) {
-    console.error(err.message);
-  }
-  console.log('Close the database connection.');
-});
+// db_spotifyShared.close((err) => {
+//   if (err) {
+//     console.error(err.message);
+//   }
+//   console.log('Close the database connection.');
+// });
 
 export default App;
 
