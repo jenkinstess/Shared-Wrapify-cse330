@@ -13,7 +13,7 @@ app2.use(
 app2.use(express.json());
 app2.use(express.urlencoded({extended:false}));
 
-let username='';
+//let username='';
 
 app2.get('/home', function(req, res){  //confused on /home aspect, may need to change for us
     console.log('Inside Home Login');
@@ -25,8 +25,13 @@ app2.get('/home', function(req, res){  //confused on /home aspect, may need to c
 });
 
 app2.post('/userWebLogin', function(req, res){
-    const newUsername=req.webLogin; //wrong way to grab variable
+    //console.log(Object.keys(req.body)); this line works
+    //console.log(req.body);
+    //console.log("res: "+res.body);
+    //console.log("hi");
+    const newUsername=Object.keys(req.body)[0]; 
     console.log("username passed: " +newUsername); //error here
+    
 })
 
 //Set the port that you want the server to run on
