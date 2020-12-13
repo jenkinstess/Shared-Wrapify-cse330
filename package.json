@@ -4,6 +4,7 @@
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.5.0",
     "aws-sdk": "^2.808.0",
+    "axios": "^0.21.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.4",
     "express": "~4.16.0",

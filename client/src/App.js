@@ -2,6 +2,7 @@
 import React,{Component} from 'react';
 import './App.css';
 import Spotify from 'spotify-web-api-js';
+import axios from 'axios';
 
 //connects to sqlite3, opens the spotifyShared.db that contains tables storing pertinent info
 // let sqlite3 = require('sqlite3').verbose();
@@ -77,6 +78,12 @@ class App extends Component{
     //   console.log(`A row has been inserted with rowid ${this.lastID}`);
     // });
     event.preventDefault();
+    axios
+      .post('http://localhost:2345/userWebLogin', this.state.webLogin)
+      .then(()=> console.log('Username Passed'))
+      .catch(err=>{
+        console.error(err);
+      });
   }
 
   getHashParams() {
