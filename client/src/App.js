@@ -34,8 +34,21 @@ class App extends Component{
       },
       
       nameTopArtist:{
-        name:'TBD'
+        topArtist:'TBD'
+      },
+
+      nameTopTracks:{
+        topTrack:'TBD'
+      },
+
+      //get Top Tracks
+
+      audioFeatures:{
+        danceability: 'TBD'
       }
+    
+
+   
      // have view set here
     };
     this.handleChange=this.handleChange.bind(this);
@@ -100,7 +113,41 @@ class App extends Component{
     .then((response)=>{
       this.setState({ 
         nameTopArtist:{
-          name: response.items[0].name
+          topArtist1: response.items[0].name,
+          topArtist2: response.items[1].name,
+          topArtist3: response.items[2].name,
+          topArtist4: response.items[3].name,
+          topArtist5: response.items[4].name
+
+        }
+      }) 
+    })
+  }
+
+  getTopTracks(){
+    spotifyWebApi. getMyTopTracks()
+    .then((response)=>{
+      this.setState({ 
+        nameTopTracks:{
+          topTrack1: response.items[0].name,
+          topTrack2: response.items[1].name,
+          topTrack3: response.items[2].name,
+          topTrack4: response.items[3].name,
+          topTrack5: response.items[4].name,
+          
+
+        }
+      }) 
+    })
+  }
+
+
+  getAudioFeatures(){
+    spotifyWebApi.getAudioFeaturesForTracks()
+    .then((response)=>{
+      this.setState({ 
+        audioFeatures:{
+          danceability: response.audio_features[0]
 
         }
       }) 
@@ -171,11 +218,39 @@ class App extends Component{
         </button> 
       </div>
 
-      <div id = 'UsersTopArtists'> Your Top Artists: {this.state.nameTopArtist.name} </div>
+      <div id = 'UsersTopArtists'> Your Top Artists:  </div>
+      <div id = 'UsersTopArtists1'> 1: {this.state.nameTopArtist.topArtist1}</div>
+      <div id = 'UsersTopArtists1'> 2: {this.state.nameTopArtist.topArtist2}</div>
+      <div id = 'UsersTopArtists1'> 3: {this.state.nameTopArtist.topArtist3}</div>
+      <div id = 'UsersTopArtists1'> 4: {this.state.nameTopArtist.topArtist4}</div>
+      <div id = 'UsersTopArtists1'> 5: {this.state.nameTopArtist.topArtist5}</div>
       <div id='butTopArtists'>
         <button onClick={() => this.getTopArtists()}>
           See your top artists!
         </button> 
+
+        <div id = 'UsersTopTracks'> Your Top Tracks:  </div>
+      <div id = 'UsersTopTracks1'> 1: {this.state.nameTopTracks.topTrack1} </div>
+      <div id = 'UsersTopTracks2'> 2: {this.state.nameTopTracks.topTrack2} </div>
+      <div id = 'UsersTopTracks3'> 3: {this.state.nameTopTracks.topTrack3} </div>
+      <div id = 'UsersTopTracks4'> 4: {this.state.nameTopTracks.topTrack4} </div>
+      <div id = 'UsersTopTracks5'> 5: {this.state.nameTopTracks.topTrack5} </div>
+      <div id='butTopTracks'>
+        <button onClick={() => this.getTopTracks()}>
+          See your top tracks!
+        </button> 
+      </div>
+
+        <div id = 'UsersAudioFeaturesForTracks'> Your Audio Features: {this.state.audioFeatures.danceability} </div>
+      <div id='butAudioFeaturesForTracks'>
+        <button onClick={() => this.getAudioFeatures()}>
+          See your audio features!
+        </button> 
+      </div>
+
+
+  
+
       </div>
 
       </div>
@@ -1859,5 +1934,141 @@ export default App;
   "href": "https://api.spotify.com/v1/me/top/artists",
   "previous": null,
   "next": "https://api.spotify.com/v1/me/top/artists?limit=20&offset=20"
+}
+
+//sample audio features from Jamie's spotify
+{
+  "audio_features": [
+    {
+      "danceability": 0.808,
+      "energy": 0.626,
+      "key": 7,
+      "loudness": -12.733,
+      "mode": 1,
+      "speechiness": 0.168,
+      "acousticness": 0.00187,
+      "instrumentalness": 0.159,
+      "liveness": 0.376,
+      "valence": 0.37,
+      "tempo": 123.99,
+      "type": "audio_features",
+      "id": "4JpKVNYnVcJ8tuMKjAj50A",
+      "uri": "spotify:track:4JpKVNYnVcJ8tuMKjAj50A",
+      "track_href": "https://api.spotify.com/v1/tracks/4JpKVNYnVcJ8tuMKjAj50A",
+      "analysis_url": "https://api.spotify.com/v1/audio-analysis/4JpKVNYnVcJ8tuMKjAj50A",
+      "duration_ms": 535223,
+      "time_signature": 4
+    },
+    {
+      "danceability": 0.457,
+      "energy": 0.815,
+      "key": 1,
+      "loudness": -7.199,
+      "mode": 1,
+      "speechiness": 0.034,
+      "acousticness": 0.102,
+      "instrumentalness": 0.0319,
+      "liveness": 0.103,
+      "valence": 0.389,
+      "tempo": 96.083,
+      "type": "audio_features",
+      "id": "2NRANZE9UCmPAS5XVbXL40",
+      "uri": "spotify:track:2NRANZE9UCmPAS5XVbXL40",
+      "track_href": "https://api.spotify.com/v1/tracks/2NRANZE9UCmPAS5XVbXL40",
+      "analysis_url": "https://api.spotify.com/v1/audio-analysis/2NRANZE9UCmPAS5XVbXL40",
+      "duration_ms": 187800,
+      "time_signature": 4
+    },
+    {
+      "danceability": 0.281,
+      "energy": 0.402,
+      "key": 4,
+      "loudness": -17.921,
+      "mode": 1,
+      "speechiness": 0.0291,
+      "acousticness": 0.0734,
+      "instrumentalness": 0.83,
+      "liveness": 0.0593,
+      "valence": 0.0793,
+      "tempo": 115.7,
+      "type": "audio_features",
+      "id": "24JygzOLM0EmRQeGtFcIcG",
+      "uri": "spotify:track:24JygzOLM0EmRQeGtFcIcG",
+      "track_href": "https://api.spotify.com/v1/tracks/24JygzOLM0EmRQeGtFcIcG",
+      "analysis_url": "https://api.spotify.com/v1/audio-analysis/24JygzOLM0EmRQeGtFcIcG",
+      "duration_ms": 497493,
+      "time_signature": 3
+    }
+  ]
+}
+
+// Sample code for top track
+{
+  "items": [
+    {
+      "album": {
+        "album_type": "ALBUM",
+        "artists": [
+              BLEH
+        ],
+        "available_markets": [
+          "AD",
+        ],
+        "external_urls": {
+          "spotify": "https://open.spotify.com/album/2fenSS68JI1h4Fo296JfGr"
+        },
+        "href": "https://api.spotify.com/v1/albums/2fenSS68JI1h4Fo296JfGr",
+        "id": "2fenSS68JI1h4Fo296JfGr",
+        "images": [
+        BLLEH
+        ],
+        "name": "folklore",
+        "release_date": "2020-07-24",
+        "release_date_precision": "day",
+        "total_tracks": 16,
+        "type": "album",
+        "uri": "spotify:album:2fenSS68JI1h4Fo296JfGr"
+      },
+      "artists": [
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/06HL4z0CvFAxyc27GXpf02"
+          },
+          "href": "https://api.spotify.com/v1/artists/06HL4z0CvFAxyc27GXpf02",
+          "id": "06HL4z0CvFAxyc27GXpf02",
+          "name": "Taylor Swift",
+          "type": "artist",
+          "uri": "spotify:artist:06HL4z0CvFAxyc27GXpf02"
+        }
+      ],
+      "available_markets": [
+        "ZA"
+      ],
+      "disc_number": 1,
+      "duration_ms": 210251,
+      "explicit": true,
+      "external_ids": {
+        "isrc": "USUG12002835"
+      },
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/0Jlcvv8IykzHaSmj49uNW8"
+      },
+      "href": "https://api.spotify.com/v1/tracks/0Jlcvv8IykzHaSmj49uNW8",
+      "id": "0Jlcvv8IykzHaSmj49uNW8",
+      "is_local": false,
+      "name": "the 1",
+      "popularity": 81,
+      "preview_url": "https://p.scdn.co/mp3-preview/efebd9d9b761b7685da9264c637a1db1cd994f19?cid=774b29d4f13844c495f206cafdad9c86",
+      "track_number": 1,
+      "type": "track",
+      "uri": "spotify:track:0Jlcvv8IykzHaSmj49uNW8"
+    }
+  ],
+  "total": 50,
+  "limit": 1,
+  "offset": 0,
+  "href": "https://api.spotify.com/v1/me/top/tracks?limit=1&offset=0",
+  "previous": null,
+  "next": "https://api.spotify.com/v1/me/top/tracks?limit=1&offset=1"
 }
 */
