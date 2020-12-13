@@ -23,6 +23,11 @@ class App extends Component{
       loggedIn: params.access_token ? true : false, //checks if access token is set or not to see if logged in 
       webLogin:'tbd',
 
+      basicUserInfo:{
+        username: 'TBD',
+        image: ''
+      },
+
       nowPlaying:{
         name: 'TBD',
         image: ''
@@ -83,6 +88,19 @@ class App extends Component{
     }
     return hashParams;
   }
+
+    getBasicUserInfo() { // we are having trouble w dis too
+    spotifyWebApi.getMe()
+    .then((response)=>{
+        this.setState({
+          basicUserInfo:{
+          username:response.display_name,
+          image:response.images[0].url
+          }
+      })
+  })
+  }
+
   getNowPlaying() { //can alter this function and make more like it, using diff calls after spotifyWebApi.
     spotifyWebApi.getMyCurrentPlaybackState()
     .then((response)=>{
@@ -147,7 +165,7 @@ class App extends Component{
     .then((response)=>{
       this.setState({ 
         audioFeatures:{
-          danceability: response.audio_features[0]
+          danceability: response.audio_features //we are having trouble w dis
 
         }
       }) 
@@ -201,10 +219,20 @@ class App extends Component{
         <button>Login with Spotify</button>
         </a>
       </div>
+
+     
+      <div> Welcome, {this.state.basicUserInfo.username} </div>
+      <div>
+        <img src={this.state.basicUserInfo.image} style={{width: 100}}/>
+      </div>
+      <button onClick={() => this.getBasicUserInfo()}>
+        Show Me Me!
+      </button> 
+
     
     <div>Now Playing: {this.state.nowPlaying.name}</div>
       <div>
-        <img src={this.state.nowPlaying.image} syle={{width: 100}}/>
+        <img src={this.state.nowPlaying.image} style={{width: 100}}/>
       </div>
       <button onClick={() => this.getNowPlaying()}>
         Check Now Playing 
