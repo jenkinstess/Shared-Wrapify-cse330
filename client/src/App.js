@@ -2,7 +2,9 @@
 import React,{Component} from 'react';
 import './App.css';
 import Spotify from 'spotify-web-api-js';
+import threeDotsWave from './threeDotsWave';
 import axios from 'axios';
+
 
 //connects to sqlite3, opens the spotifyShared.db that contains tables storing pertinent info
 // let sqlite3 = require('sqlite3').verbose();
@@ -178,6 +180,8 @@ class App extends Component{
       }) 
     })
   }
+
+  
   
 
     //in here for checking state in if statements, need to declare shared state in parent component (i think we already do this in the constructor)
@@ -189,6 +193,8 @@ class App extends Component{
 
 
     return (  
+
+
 
     <div className="App">
       <div id='OURwebpageLogin'>
@@ -227,6 +233,13 @@ class App extends Component{
         </a>
       </div>
 
+      <div>
+        <p> This is a test </p>
+      <Grid>
+      <threeDotsWave />
+      </Grid>
+      </div>
+
      
       <div> Welcome, {this.state.basicUserInfo.username} </div>
       <div>
@@ -235,6 +248,7 @@ class App extends Component{
       <button onClick={() => this.getBasicUserInfo()}>
         Show Me Me!
       </button> 
+
 
     
     <div>Now Playing: {this.state.nowPlaying.name}</div>
@@ -292,6 +306,24 @@ class App extends Component{
     );
   }
 }
+
+function Grid({ children }) {
+  return (
+    <div className="grid">
+      <LoadingBox>{children}</LoadingBox>
+    </div>
+  );
+}
+
+function LoadingBox({ children }) {
+  return React.Children.map(children, child => {
+    return <div className="loading-box">{child}</div>;
+  });
+}
+
+
+
+
 
 // function App() {
    
