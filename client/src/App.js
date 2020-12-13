@@ -72,13 +72,7 @@ class App extends Component{
   }
   handleSubmit(event){
     alert('A name was submitted: ' + this.state.webLogin); //to test and see what value was submitted
-    //store state.weblogin in database here
-    // db_spotifyShared.run('INSERT INTO user_info(username) VALUES(?)', [this.state.webLogin], function(err){
-    //   if(err){
-    //     return console.log(err.message);
-    //   }
-    //   console.log(`A row has been inserted with rowid ${this.lastID}`);
-    // });
+   
     event.preventDefault();
     axios
       .post('http://localhost:2345/userWebLogin', this.state.webLogin)
