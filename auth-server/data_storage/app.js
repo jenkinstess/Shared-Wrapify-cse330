@@ -47,11 +47,11 @@ app2.post('/userWebLogin', function(req, res){
       }
       console.log(`A row has been inserted with rowid ${this.lastID}`);
     });
+    //db_spotifyShared.close();
+    //could close database on logout
 })
 
 //Set the port that you want the server to run on
 const port = process.env.PORT || 2345;
 app2.listen(port);
 console.log('App2 is listening on port ' + port);
-
-db_spotifyShared.close();
