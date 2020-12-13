@@ -1,6 +1,6 @@
 // source code: https://github.com/Darth-Knoppix/loading-animation/blob/master/src/ThreeDotsWave.js
 
-import React from "react";
+import React,{Component} from 'react';
 import { motion } from "framer-motion";
 
 const loadingContainer = {
@@ -46,8 +46,9 @@ const loadingCircleTransition = {
   ease: "easeInOut"
 };
 
-export default function threeDotsWave() {
-  return (
+class ThreeDotsWave extends Component {
+  render() {
+    return (
     <motion.div
       style={loadingContainer}
       variants={loadingContainerVariants}
@@ -72,3 +73,6 @@ export default function threeDotsWave() {
     </motion.div>
   );
 }
+}
+
+export default ThreeDotsWave;

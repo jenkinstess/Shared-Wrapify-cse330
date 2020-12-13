@@ -2,7 +2,7 @@
 import React,{Component} from 'react';
 import './App.css';
 import Spotify from 'spotify-web-api-js';
-import threeDotsWave from './threeDotsWave';
+import ThreeDotsWave from './threeDotsWave';
 import axios from 'axios';
 
 
@@ -197,6 +197,7 @@ class App extends Component{
 
 
     <div className="App">
+      <ThreeDotsWave></ThreeDotsWave>
       <div id='OURwebpageLogin'>
         Enter your spotify username (note that this should NOT be your email)
       <form onSubmit={this.handleSubmit}> 
