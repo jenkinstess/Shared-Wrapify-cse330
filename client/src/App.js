@@ -42,11 +42,19 @@ class App extends Component{
       },
       
       nameTopArtist:{
-        topArtist:'TBD'
+        topArtist1:'',
+        topArtist2:'',
+        topArtist3:'',
+        topArtist4:'',
+        topArtist5:'',
       },
 
       nameTopTracks:{
-        topTrack:'TBD'
+        topTrack1:'',
+        topTrack2:'',
+        topTrack3:'',
+        topTrack4:'',
+        topTrack5:'',
       },
 
       //get Top Tracks
@@ -139,10 +147,27 @@ class App extends Component{
           topArtist3: response.items[2].name,
           topArtist4: response.items[3].name,
           topArtist5: response.items[4].name
-
         }
       }) 
+      //console.log(this.state.nameTopArtist.topArtist1);
+      axios
+      .post('http://localhost:2345/userTopArtists', {"username":this.state.webLogin, "firstTopArtist":this.state.nameTopArtist.topArtist1, "secondTopArtist":this.state.nameTopArtist.topArtist2, "thirdTopArtist":this.state.nameTopArtist.topArtist3, "fourthTopArtist":this.state.nameTopArtist.topArtist4, "fifthTopArtist":this.state.nameTopArtist.topArtist5})
+      .then((res)=> console.log('Top Artists Passed'))
+      .catch(err=>{
+        console.error(err);
+      });
     })
+
+    //react lifecycles
+
+    //asynch await syntax
+    //console.log(this.state.nameTopArtist.topArtist1);
+    // axios
+    //   .post('http://localhost:2345/userTopArtists', {"username":this.state.webLogin, "firstTopArtist":this.state.nameTopArtist.topArtist1, "secondTopArtist":this.state.nameTopArtist.topArtist2, "thirdTopArtist":this.state.nameTopArtist.topArtist3, "fourthTopArtist":this.state.nameTopArtist.topArtist4, "fifthTopArtist":this.state.nameTopArtist.topArtist5})
+    //   .then((res)=> console.log('Top Artists Passed'))
+    //   .catch(err=>{
+    //     console.error(err);
+    //   });
   }
 
   getTopTracks(){

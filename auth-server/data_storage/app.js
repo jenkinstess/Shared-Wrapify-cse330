@@ -51,6 +51,27 @@ app2.post('/userWebLogin', function(req, res){
     //could close database on logout
 })
 
+app2.post('/userTopArtists', function(req, res){
+    //console.log(Object.keys(req.body)); //this line works
+    console.log(req);
+    //i think it should be req.body.firstTopArtist ??
+
+
+    //console.log("res: "+res.body);
+    //console.log("hi");
+    //const user=Object.keys(req.body)[0]; 
+    //console.log("username passed: " +newUsername); 
+     //store state.weblogin in database here
+    // db_spotifyShared.run('INSERT INTO user_info(username) VALUES(?)', [newUsername], function(err){
+    //   if(err){
+    //     return console.log(err.message);
+    //   }
+    //   console.log(`A row has been inserted with rowid ${this.lastID}`);
+    // });
+    //db_spotifyShared.close();
+    //could close database on logout
+})
+
 //Set the port that you want the server to run on
 const port = process.env.PORT || 2345;
 app2.listen(port);
