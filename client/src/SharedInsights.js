@@ -8,6 +8,9 @@ function SharedInsights() {
             <h1>This is the Shared Insights Page</h1>
         </div>
 
+        //includes algo for shared compatibility number
+        //includes 
+
     );
 }
 

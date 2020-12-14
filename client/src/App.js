@@ -2,6 +2,7 @@
 import React,{Component} from 'react';
 import './App.css';
 import Spotify from 'spotify-web-api-js';
+import { motion } from "framer-motion";
 import ThreeDotsWave from './threeDotsWave';
 import axios from 'axios';
 import Nav from './Nav';
@@ -57,12 +58,17 @@ class App extends Component{
         topTrack3:'',
         topTrack4:'',
         topTrack5:'',
+        topTrack1id:'',
+        topTrack2id:'',
+        topTrack3id:'',
+        topTrack4id:'',
+        topTrack5id:'',
       },
 
       //get Top Tracks
 
       audioFeatures:{
-        danceability: 'TBD'
+        danceability: ''
       }
     
 
@@ -182,6 +188,11 @@ class App extends Component{
           topTrack3: response.items[2].name,
           topTrack4: response.items[3].name,
           topTrack5: response.items[4].name,
+          topTrack1id: response.items[0].id,
+          topTrack2id: response.items[1].id,
+          topTrack3id: response.items[2].id,
+          topTrack4id: response.items[3].id,
+          topTrack5id: response.items[4].id,
           
 
         }
@@ -191,12 +202,15 @@ class App extends Component{
 
 
   getAudioFeatures(){
-    spotifyWebApi.getAudioFeaturesForTracks()
+    spotifyWebApi.getAudioFeaturesForTracks(this.state.nameTopTracks.topTrack1id)
     .then((response)=>{
       this.setState({ 
         audioFeatures:{
-          danceability: response.audio_features //we are having trouble w dis
-
+          danceability: response.audio_features[0].danceability,
+          acousticness: response.audio_features[0].acousticness,
+          energy: response.audio_features[0].energy,
+          liveness: response.audio_features[0].liveness,
+          loudness: response.audio_features[0].loudness,
         }
       }) 
     })
@@ -215,7 +229,7 @@ class App extends Component{
 
     return (  
    <Router>
-
+    
     <div className="App">
       <Nav></Nav>
       <Route path="/" exact component={Home} />
@@ -254,7 +268,7 @@ class App extends Component{
       <div id='routToSpotify'>
         
         <a href='http://localhost:3456'>
-        <button>Login with Spotify</button>
+        <button className="LoginButton">Login with Spotify</button>
         </a>
       </div>
 
@@ -267,28 +281,28 @@ class App extends Component{
      
       <div> Welcome, {this.state.basicUserInfo.username} </div>
       <div>
-        <img src={this.state.basicUserInfo.image} style={{width: 100}}/>
+        <img src={this.state.basicUserInfo.image} style={{width: 250}}/>
       </div>
-      <button onClick={() => this.getBasicUserInfo()}>
+      <motion.button className="styledButton" onClick={() => this.getBasicUserInfo()}  whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}} >
         Show Me Me!
-      </button> 
+      </motion.button> 
 
 
     
     <div>Now Playing: {this.state.nowPlaying.name}</div>
       <div>
-        <img src={this.state.nowPlaying.image} style={{width: 100}}/>
+        <img src={this.state.nowPlaying.image} style={{width: 500}}/>
       </div>
-      <button onClick={() => this.getNowPlaying()}>
+      <motion.button className="styledButton" onClick={() => this.getNowPlaying()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
         Check Now Playing 
-      </button> 
+      </motion.button> 
     
       <div id= '12SavedTracks'>First saved Track: {this.state.savedTracks.nameTrack1}</div>
       {/* <div>Second saved Track: {this.state.savedTracks.nameTrack2}</div> */}
       <div id='butSavedTracks'>
-        <button onClick={() => this.getSavedTracks()}>
+        <motion.button className="styledButton" onClick={() => this.getSavedTracks()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
           See first saved track!
-        </button> 
+        </motion.button> 
       </div>
 
       <div id = 'UsersTopArtists'> Your Top Artists:  </div>
@@ -298,9 +312,9 @@ class App extends Component{
       <div id = 'UsersTopArtists1'> 4: {this.state.nameTopArtist.topArtist4}</div>
       <div id = 'UsersTopArtists1'> 5: {this.state.nameTopArtist.topArtist5}</div>
       <div id='butTopArtists'>
-        <button onClick={() => this.getTopArtists()}>
+        <motion.button className="styledButton" onClick={() => this.getTopArtists()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
           See your top artists!
-        </button> 
+        </motion.button> 
 
         <div id = 'UsersTopTracks'> Your Top Tracks:  </div>
       <div id = 'UsersTopTracks1'> 1: {this.state.nameTopTracks.topTrack1} </div>
@@ -309,22 +323,28 @@ class App extends Component{
       <div id = 'UsersTopTracks4'> 4: {this.state.nameTopTracks.topTrack4} </div>
       <div id = 'UsersTopTracks5'> 5: {this.state.nameTopTracks.topTrack5} </div>
       <div id='butTopTracks'>
-        <button onClick={() => this.getTopTracks()}>
+        <motion.button className="styledButton"onClick={() => this.getTopTracks()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
           See your top tracks!
-        </button> 
+        </motion.button> 
       </div>
 
-        <div id = 'UsersAudioFeaturesForTracks'> Your Audio Features: {this.state.audioFeatures.danceability} </div>
-      <div id='butAudioFeaturesForTracks'>
-        <button onClick={() => this.getAudioFeatures()}>
+        <div id = 'UsersAudioFeaturesForTracks'> Your Audio Feature Statistics:  </div>
+      <div id='butAudioFeaturesForTracks'> Danceability:{this.state.audioFeatures.danceability} </div> 
+      <div id='butAudioFeaturesForTracks'> Acousticness:{this.state.audioFeatures.acousticness} </div>
+      <div id='butAudioFeaturesForTracks'> Energy:{this.state.audioFeatures.energy} </div>
+      <div id='butAudioFeaturesForTracks'> Liveness:{this.state.audioFeatures.liveness} </div>
+      <div id='butAudioFeaturesForTracks'> Loudness:{this.state.audioFeatures.loudness} </div>
+      <div id='butAudioFeatures'>
+        <motion.button className="styledButton" onClick={() => this.getAudioFeatures()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
           See your audio features!
-        </button> 
+        </motion.button> 
       </div>
 
 
   
 
       </div>
+
 
       </div>
       </Router>
@@ -358,6 +378,7 @@ function LoadingBox({ children }) {
 const Home = () => (
   <div>
     <h1> Shared Wrappify</h1>
+    <h3>Compare your music taste with your friends! </h3>
   </div>
 );
 
