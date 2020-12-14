@@ -60,3 +60,21 @@ div, button{
   justify-content: center;
   align-items: center;
 }
+
+nav{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height:10vh;
+  background:green;
+  color: white;
+
+}
+
+.nav-links{
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  list-style: none;
+}

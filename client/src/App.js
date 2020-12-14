@@ -4,6 +4,9 @@ import './App.css';
 import Spotify from 'spotify-web-api-js';
 import ThreeDotsWave from './threeDotsWave';
 import axios from 'axios';
+import Nav from './Nav';
+import SharedInsights from './SharedInsights';
+import {BrowserRouter as Router, Switch,Route} from 'react-router-dom';
 
 
 //connects to sqlite3, opens the spotifyShared.db that contains tables storing pertinent info
@@ -15,7 +18,6 @@ import axios from 'axios';
 //   console.log('Connected to the spotifyShared database.');
 // });
 
-// Jamie test git push
 const spotifyWebApi = new Spotify();
 
 class App extends Component{
@@ -212,11 +214,14 @@ class App extends Component{
 
 
     return (  
-
-
+   <Router>
 
     <div className="App">
-      <ThreeDotsWave></ThreeDotsWave>
+      <Nav></Nav>
+      <Route path="/" exact component={Home} />
+      {/* <Route path="/MyInsights" component= {MyInsights} /> */}
+      <Route path="/SharedInsights" component= {SharedInsights} />
+    
       <div id='OURwebpageLogin'>
         Enter your spotify username (note that this should NOT be your email)
       <form onSubmit={this.handleSubmit}> 
@@ -254,7 +259,6 @@ class App extends Component{
       </div>
 
       <div>
-        <p> This is a test </p>
       <Grid>
       <threeDotsWave />
       </Grid>
@@ -323,6 +327,7 @@ class App extends Component{
       </div>
 
       </div>
+      </Router>
     );
   }
 }
@@ -349,5 +354,11 @@ function LoadingBox({ children }) {
 //   }
 //   console.log('Close the database connection.');
 // });
+
+const Home = () => (
+  <div>
+    <h1> Shared Wrappify</h1>
+  </div>
+);
 
 export default App;
