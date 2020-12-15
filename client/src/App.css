@@ -111,8 +111,8 @@ input[type=button], input[type=submit], input[type=reset] {
 .loading-box {
   width:calc(100%- 1rem);
   height: calc(100% -1rem);
-  outline: 1px solid rgba(0,0,0,0.1);
-  background-color: rgba(0,0,0,0.01);
+  outline: 1px solid rgba(0,50,0,0.1);
+  background-color: rgba(219, 130, 130, 0.01);
   display: flex;
   justify-content: center;
   align-items: center;

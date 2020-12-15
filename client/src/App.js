@@ -68,10 +68,18 @@ class App extends Component{
       //get Top Tracks
 
       audioFeatures:{
-        danceability: ''
+        danceability: '',
+      },
+
+      playlist:{
+        //playlistId:'',
+        playlistImage:'',
+        playlistName:'',
       },
     
       otherUsers:[]
+
+
    
      // have view set here
     };
@@ -237,6 +245,22 @@ class App extends Component{
     })
   }
 
+  getSuggestedPlaylist(){
+    spotifyWebApi.getUserPlaylists()
+    .then((response)=>{
+      this.setState({ 
+        playlist:{
+          //playlistId: response.items[0].id,
+          playlistImage: response.items[2].images[0].url,
+          playlistName:response.items[2].name
+
+        }
+      }) 
+    })
+  }
+
+  
+
   // getOverlappingData(){
   //   axios
   //   .get('http://localhost:2345/overlappingData', {params:{
@@ -259,7 +283,6 @@ class App extends Component{
 
   render(){ 
 
-
     return (  
    <Router>
     
@@ -280,6 +303,7 @@ class App extends Component{
           <input type="submit" value="Submit" />
         </form>
       </div>
+      <ThreeDotsWave></ThreeDotsWave>
       {/* pass form data to back-end,  */}
 
 
@@ -348,6 +372,7 @@ class App extends Component{
         <motion.button className="styledButton" onClick={() => this.getTopArtists()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
           See your top artists!
         </motion.button> 
+    
 
         <div id = 'UsersTopTracks'> Your Top Tracks:  </div>
       <div id = 'UsersTopTracks1'> 1: {this.state.nameTopTracks.topTrack1} </div>
@@ -376,6 +401,7 @@ class App extends Component{
       <motion.button className="styledButton" onClick={() => this.getOtherUsers()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
           See other users!
         </motion.button> 
+        
         {/* to make this neater, maybe some how print out w a for
         loop so that all the names are spaced apart? i dont think you
         can do for loops w html, but i bet theres a way to at least get 
@@ -383,12 +409,24 @@ class App extends Component{
         w the data anyways. will prob just be accessing individually. */}
 
         <div>{this.state.otherUsers} </div>
+
+        
+        
+        <div>  {this.state.playlist.playlistName} </div>
+      <div>
+        <img src={this.state.playlist.playlistImage} style={{width: 250}}/>
+      </div>
+        <motion.button className="styledButton" onClick={() => this.getSuggestedPlaylist()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
+          Suggest a playlist!
+        </motion.button> 
   
 
       </div>
 
 
       </div>
+   
+
       </Router>
     );
   }
