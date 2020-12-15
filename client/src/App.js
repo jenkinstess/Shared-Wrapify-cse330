@@ -303,7 +303,7 @@ class App extends Component{
           <input type="submit" value="Submit" />
         </form>
       </div>
-      <ThreeDotsWave></ThreeDotsWave>
+
       {/* pass form data to back-end,  */}
 
 

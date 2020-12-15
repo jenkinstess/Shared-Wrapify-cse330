@@ -4,8 +4,8 @@ import React,{Component} from 'react';
 import { motion } from "framer-motion";
 
 const loadingContainer = {
-  width: "20rem",
-  height: "8rem",
+  width: "8rem",
+  height: "2rem",
   display: "flex",
   justifyContent: "space-around",
 };
