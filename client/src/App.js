@@ -71,7 +71,7 @@ class App extends Component{
         danceability: ''
       },
     
-      otherUsers:''
+      otherUsers:[]
    
      // have view set here
     };
@@ -226,6 +226,7 @@ class App extends Component{
     axios
     .get('http://localhost:2345/otherUsers')
     .then(res=>{
+      console.log(res);
       let persons=res.data;
       this.setState({
         otherUsers:persons
@@ -235,6 +236,20 @@ class App extends Component{
       console.log(err);
     })
   }
+
+  // getOverlappingData(){
+  //   axios
+  //   .get('http://localhost:2345/overlappingData', {params:{
+  //     user1:this.state.webLogin,
+  //     user2:
+  //   }})
+  //   .then(res=>{
+
+  //   })
+  //   .catch(function (err){
+  //     console.log(err);
+  //   })
+  // }
   
 
     //in here for checking state in if statements, need to declare shared state in parent component (i think we already do this in the constructor)
@@ -302,7 +317,7 @@ class App extends Component{
         <img src={this.state.basicUserInfo.image} style={{width: 250}}/>
       </div>
       <motion.button className="styledButton" onClick={() => this.getBasicUserInfo()}  whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}} >
-        Show Me, Me!
+        Show Me Me!
       </motion.button> 
 
 
@@ -361,6 +376,13 @@ class App extends Component{
       <motion.button className="styledButton" onClick={() => this.getOtherUsers()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
           See other users!
         </motion.button> 
+        {/* to make this neater, maybe some how print out w a for
+        loop so that all the names are spaced apart? i dont think you
+        can do for loops w html, but i bet theres a way to at least get 
+        spaces between. Also realizing this isnt actually what we wanna do
+        w the data anyways. will prob just be accessing individually. */}
+
+        <div>{this.state.otherUsers} </div>
   
 
       </div>

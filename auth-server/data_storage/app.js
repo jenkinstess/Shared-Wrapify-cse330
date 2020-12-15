@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+const { Redirect } = require('react-router-dom');
 const app2 = express();
 // a test route to make sure we can reach the backend
 //this would normally go in a routes file
@@ -83,20 +84,23 @@ app2.post('/userTopTracks', function(req, res){
 
 app2.get('/otherUsers', function(req, res){  //confused on /home aspect, may need to change for us
     console.log('Getting Other Users');
-    let sqlCall='SELECT username FROM user_info';
-    let othUsers;
-    db_spotifyShared.each(sqlCall, (err, row)=>{
+    let sqlCall='SELECT * FROM user_info';
+    let othUsers=[];
+    db_spotifyShared.all(sqlCall, (err, row)=>{
         if(err){
             console.log(err);
         }
-        othUsers=row;
-        //console.log(row);
+        for(let i=0; i<row.length;++i){
+            othUsers.push(row[i].username);
+        }
+        console.log(othUsers);
+        res.send(othUsers);
     });
     // console.log(othUsers[0].username);
     // console.log(othUsers.username[0]);
     // console.log(othUsers.username);
-    console.log(othUsers);
-    //res.send(row) //send data w res.send(data)
+    //console.log(othUsers);
+    //res.send(othUsers); //send data w res.send(data)
 });
 
 
