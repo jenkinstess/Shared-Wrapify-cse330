@@ -412,20 +412,28 @@ class App extends Component{
 
         
         
-        <div>  {this.state.playlist.playlistName} </div>
+
+      </div>
+
+        <div>
+        <h3>You share ___ artists, ____ genres, and ____ top tracks </h3>
+        </div>
+
+      <motion.button className="styledButton"  whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
+          See your overall match score!
+        </motion.button> 
+
+      </div>
+
+      <div>  {this.state.playlist.playlistName} </div>
+
       <div>
         <img src={this.state.playlist.playlistImage} style={{width: 250}}/>
-      </div>
+     
         <motion.button className="styledButton" onClick={() => this.getSuggestedPlaylist()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
           Suggest a playlist!
         </motion.button> 
-  
-
-      </div>
-
-
-      </div>
-   
+        </div>
 
       </Router>
     );
