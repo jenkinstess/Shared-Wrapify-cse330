@@ -49,28 +49,57 @@ app2.post('/userWebLogin', function(req, res){
     });
     //db_spotifyShared.close();
     //could close database on logout
-})
+});
 
 app2.post('/userTopArtists', function(req, res){
-    //console.log(Object.keys(req.body)); //this line works
-    console.log(req);
-    //i think it should be req.body.firstTopArtist ??
 
+    let sqlCall='UPDATE user_info SET topArtist1=(?), topArtist2=(?), topArtist3=(?), topArtist4=(?), topArtist5=(?) WHERE username=(?)';
+    let sqlData=[req.body.firstTopArtist, req.body.secondTopArtist, req.body.thirdTopArtist, req.body.fourthTopArtist, req.body.fifthTopArtist, req.body.username];
 
-    //console.log("res: "+res.body);
-    //console.log("hi");
-    //const user=Object.keys(req.body)[0]; 
-    //console.log("username passed: " +newUsername); 
-     //store state.weblogin in database here
-    // db_spotifyShared.run('INSERT INTO user_info(username) VALUES(?)', [newUsername], function(err){
-    //   if(err){
-    //     return console.log(err.message);
-    //   }
-    //   console.log(`A row has been inserted with rowid ${this.lastID}`);
-    // });
+    db_spotifyShared.run(sqlCall, sqlData, function(err){
+      if(err){
+        return console.log(err.message);
+      }
+      console.log(`A row has been updated with rowid ${this.lastID}`);
+    });
     //db_spotifyShared.close();
     //could close database on logout
-})
+});
+
+app2.post('/userTopTracks', function(req, res){
+
+    let sqlCall='UPDATE user_info SET topTrack1=(?), topTrack2=(?), topTrack3=(?), topTrack4=(?), topTrack5=(?) WHERE username=(?)';
+    let sqlData=[req.body.firstTopTrack, req.body.secondTopTrack, req.body.thirdTopTrack, req.body.fourthTopTrack, req.body.fifthTopTrack, req.body.username];
+
+    db_spotifyShared.run(sqlCall, sqlData, function(err){
+      if(err){
+        return console.log(err.message);
+      }
+      console.log(`A row has been updated with rowid ${this.lastID}`);
+    });
+    //db_spotifyShared.close();
+    //could close database on logout
+});
+
+app2.get('/otherUsers', function(req, res){  //confused on /home aspect, may need to change for us
+    console.log('Getting Other Users');
+    let sqlCall='SELECT username FROM user_info';
+    let othUsers;
+    db_spotifyShared.each(sqlCall, (err, row)=>{
+        if(err){
+            console.log(err);
+        }
+        othUsers=row;
+        //console.log(row);
+    });
+    // console.log(othUsers[0].username);
+    // console.log(othUsers.username[0]);
+    // console.log(othUsers.username);
+    console.log(othUsers);
+    //res.send(row) //send data w res.send(data)
+});
+
+
 
 //Set the port that you want the server to run on
 const port = process.env.PORT || 2345;

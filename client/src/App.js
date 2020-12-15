@@ -69,9 +69,9 @@ class App extends Component{
 
       audioFeatures:{
         danceability: ''
-      }
+      },
     
-
+      otherUsers:''
    
      // have view set here
     };
@@ -122,7 +122,11 @@ class App extends Component{
 
   getNowPlaying() { //can alter this function and make more like it, using diff calls after spotifyWebApi.
     spotifyWebApi.getMyCurrentPlaybackState()
+  
     .then((response)=>{
+      //before setting state, if statement to see if response is null
+      // console.log(response)
+      // if(resoonse. item.name==null)
         this.setState({
           nowPlaying:{
           name:response.item.name,  // .item is used to access variables
@@ -160,7 +164,6 @@ class App extends Component{
       //console.log(this.state.nameTopArtist.topArtist1);
       axios
       .post('http://localhost:2345/userTopArtists', {"username":this.state.webLogin, "firstTopArtist":this.state.nameTopArtist.topArtist1, "secondTopArtist":this.state.nameTopArtist.topArtist2, "thirdTopArtist":this.state.nameTopArtist.topArtist3, "fourthTopArtist":this.state.nameTopArtist.topArtist4, "fifthTopArtist":this.state.nameTopArtist.topArtist5})
-      .then((res)=> console.log('Top Artists Passed'))
       .catch(err=>{
         console.error(err);
       });
@@ -193,16 +196,19 @@ class App extends Component{
           topTrack3id: response.items[2].id,
           topTrack4id: response.items[3].id,
           topTrack5id: response.items[4].id,
-          
-
         }
-      }) 
+      })
+      axios
+      .post('http://localhost:2345/userTopTracks', {"username":this.state.webLogin, "firstTopTrack":this.state.nameTopTracks.topTrack1, "secondTopTrack":this.state.nameTopTracks.topTrack2, "thirdTopTrack":this.state.nameTopTracks.topTrack3, "fourthTopTrack":this.state.nameTopTracks.topTrack4, "fifthTopTrack":this.state.nameTopTracks.topTrack5})
+      .catch(err=>{
+        console.error(err);
+      });
     })
   }
 
 
   getAudioFeatures(){
-    spotifyWebApi.getAudioFeaturesForTracks(this.state.nameTopTracks.topTrack1id)
+    spotifyWebApi.getAudioFeaturesForTracks(this.state.nameTopTracks.topTrack2id)
     .then((response)=>{
       this.setState({ 
         audioFeatures:{
@@ -216,7 +222,19 @@ class App extends Component{
     })
   }
 
-  
+  getOtherUsers(){
+    axios
+    .get('http://localhost:2345/otherUsers')
+    .then(res=>{
+      let persons=res.data;
+      this.setState({
+        otherUsers:persons
+      })
+    })
+    .catch(function (err){
+      console.log(err);
+    })
+  }
   
 
     //in here for checking state in if statements, need to declare shared state in parent component (i think we already do this in the constructor)
@@ -284,7 +302,7 @@ class App extends Component{
         <img src={this.state.basicUserInfo.image} style={{width: 250}}/>
       </div>
       <motion.button className="styledButton" onClick={() => this.getBasicUserInfo()}  whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}} >
-        Show Me Me!
+        Show Me, Me!
       </motion.button> 
 
 
@@ -340,7 +358,9 @@ class App extends Component{
         </motion.button> 
       </div>
 
-
+      <motion.button className="styledButton" onClick={() => this.getOtherUsers()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
+          See other users!
+        </motion.button> 
   
 
       </div>
