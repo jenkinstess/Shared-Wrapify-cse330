@@ -136,12 +136,16 @@ class App extends Component{
           }
       })
       axios
-          .post('http://localhost:2345/userWebLogin', this.state.webLogin)
+          .post('http://localhost:2345/userWebLogin', this.state.basicUserInfo.username)
            .then((res)=> console.log('Username Passed'))
            .catch(err=>{
              console.error(err);
            });
+<<<<<<< HEAD
 
+=======
+      
+>>>>>>> e3d87f4ec5ec88a8f2b175ebc2c2b654d2e185a3
       axios
       .get('http://localhost:2345/otherUsers')
       .then(res=>{
