@@ -103,7 +103,193 @@ app2.get('/otherUsers', function(req, res){  //confused on /home aspect, may nee
     //res.send(othUsers); //send data w res.send(data)
 });
 
+app2.get('/overlappingData', function(req, res){  
+    console.log('Comparing users info');
+    let user1=req.query.user1;
+    let user2=req.query.user2;
+    let user1Index;
+    let user2Index;
+    let sqlCall='SELECT * FROM user_info ';
+    let overlapArtists=[];
+    let overlapTracks=[];
+    db_spotifyShared.all(sqlCall,(err, rows)=>{
+        if(err){
+            console.log(err);
+        }
 
+        for(let i=0; i<rows.length; ++i){
+            if(user1==rows[i].username){
+                user1Index=i;
+            }
+            else if(user2==rows[i].username){
+                user2Index=i;
+            }
+            else{
+            }
+        }
+        console.log("user1Index=" + user1Index);
+        console.log("user2Index=" + user2Index);
+        //artists
+        if(rows[user1Index].topArtist1==rows[user2Index].topArtist1){
+            overlapArtists.push(rows[user1Index].topArtist1);
+        }
+        if(rows[user1Index].topArtist1==rows[user2Index].topArtist2){
+            overlapArtists.push(rows[user1Index].topArtist1);
+        }
+        if(rows[user1Index].topArtist1==rows[user2Index].topArtist3){
+            overlapArtists.push(rows[user1Index].topArtist1);
+        }
+        if(rows[user1Index].topArtist1==rows[user2Index].topArtist4){
+            overlapArtists.push(rows[user1Index].topArtist1);
+        }
+        if(rows[user1Index].topArtist1==rows[user2Index].topArtist5){
+            overlapArtists.push(rows[user1Index].topArtist1);
+        }
+        if(rows[user1Index].topArtist2==rows[user2Index].topArtist1){
+            overlapArtists.push(rows[user1Index].topArtist2);
+        }
+        if(rows[user1Index].topArtist2==rows[user2Index].topArtist2){
+            overlapArtists.push(rows[user1Index].topArtist2);
+        }
+        if(rows[user1Index].topArtist2==rows[user2Index].topArtist3){
+            overlapArtists.push(rows[user1Index].topArtist2);
+        }
+        if(rows[user1Index].topArtist2==rows[user2Index].topArtist4){
+            overlapArtists.push(rows[user1Index].topArtist2);
+        }
+        if(rows[user1Index].topArtist2==rows[user2Index].topArtist5){
+            overlapArtists.push(rows[user1Index].topArtist2);
+        }
+        if(rows[user1Index].topArtist3==rows[user2Index].topArtist1){
+            overlapArtists.push(rows[user1Index].topArtist3);
+        }
+        if(rows[user1Index].topArtist3==rows[user2Index].topArtist2){
+            overlapArtists.push(rows[user1Index].topArtist3);
+        }
+        if(rows[user1Index].topArtist3==rows[user2Index].topArtist3){
+            overlapArtists.push(rows[user1Index].topArtist3);
+        }
+        if(rows[user1Index].topArtist3==rows[user2Index].topArtist4){
+            overlapArtists.push(rows[user1Index].topArtist3);
+        }
+        if(rows[user1Index].topArtist3==rows[user2Index].topArtist5){
+            overlapArtists.push(rows[user1Index].topArtist3);
+        }
+        if(rows[user1Index].topArtist4==rows[user2Index].topArtist1){
+            overlapArtists.push(rows[user1Index].topArtist4);
+        }
+        if(rows[user1Index].topArtist4==rows[user2Index].topArtist2){
+            overlapArtists.push(rows[user1Index].topArtist4);
+        }
+        if(rows[user1Index].topArtist4==rows[user2Index].topArtist3){
+            overlapArtists.push(rows[user1Index].topArtist4);
+        }
+        if(rows[user1Index].topArtist4==rows[user2Index].topArtist4){
+            overlapArtists.push(rows[user1Index].topArtist4);
+        }
+        if(rows[user1Index].topArtist4==rows[user2Index].topArtist5){
+            overlapArtists.push(rows[user1Index].topArtist4);
+        }
+        if(rows[user1Index].topArtist5==rows[user2Index].topArtist1){
+            overlapArtists.push(rows[user1Index].topArtist5);
+        }
+        if(rows[user1Index].topArtist5==rows[user2Index].topArtist2){
+            overlapArtists.push(rows[user1Index].topArtist5);
+        }
+        if(rows[user1Index].topArtist5==rows[user2Index].topArtist3){
+            overlapArtists.push(rows[user1Index].topArtist5);
+        }
+        if(rows[user1Index].topArtist5==rows[user2Index].topArtist4){
+            overlapArtists.push(rows[user1Index].topArtist5);
+        }
+        if(rows[user1Index].topArtist5==rows[user2Index].topArtist5){
+            overlapArtists.push(rows[user1Index].topArtist5);
+        }
+        
+        //tracks
+        if(rows[user1Index].topTrack1==rows[user2Index].topTrack1){
+            overlapTracks.push(rows[user1Index].topTrack1);
+        }
+        if(rows[user1Index].topTrack1==rows[user2Index].topTrack2){
+            overlapTracks.push(rows[user1Index].topTrack1);
+        }
+        if(rows[user1Index].topTrack1==rows[user2Index].topTrack3){
+            overlapTracks.push(rows[user1Index].topTrack1);
+        }
+        if(rows[user1Index].topTrack1==rows[user2Index].topTrack4){
+            overlapTracks.push(rows[user1Index].topTrack1);
+        }
+        if(rows[user1Index].topTrack1==rows[user2Index].topTrack5){
+            overlapTracks.push(rows[user1Index].topTrack1);
+        }
+        if(rows[user1Index].topTrack2==rows[user2Index].topTrack1){
+            overlapTracks.push(rows[user1Index].topTrack2);
+        }
+        if(rows[user1Index].topTrack2==rows[user2Index].topTrack2){
+            overlapTracks.push(rows[user1Index].topTrack2);
+        }
+        if(rows[user1Index].topTrack2==rows[user2Index].topTrack3){
+            overlapTracks.push(rows[user1Index].topTrack2);
+        }
+        if(rows[user1Index].topTrack2==rows[user2Index].topTrack4){
+            overlapTracks.push(rows[user1Index].topTrack2);
+        }
+        if(rows[user1Index].topTrack2==rows[user2Index].topTrack5){
+            overlapTracks.push(rows[user1Index].topTrack2);
+        }
+        if(rows[user1Index].topTrack3==rows[user2Index].topTrack1){
+            overlapTracks.push(rows[user1Index].topTrack3);
+        }
+        if(rows[user1Index].topTrack3==rows[user2Index].topTrack2){
+            overlapTracks.push(rows[user1Index].topTrack3);
+        }
+        if(rows[user1Index].topTrack3==rows[user2Index].topTrack3){
+            overlapTracks.push(rows[user1Index].topTrack3);
+        }
+        if(rows[user1Index].topTrack3==rows[user2Index].topTrack4){
+            overlapTracks.push(rows[user1Index].topTrack3);
+        }
+        if(rows[user1Index].topTrack3==rows[user2Index].topTrack5){
+            overlapTracks.push(rows[user1Index].topTrack3);
+        }
+        if(rows[user1Index].topTrack4==rows[user2Index].topTrack1){
+            overlapTracks.push(rows[user1Index].topTrack4);
+        }
+        if(rows[user1Index].topTrack4==rows[user2Index].topTrack2){
+            overlapTracks.push(rows[user1Index].topTrack4);
+        }
+        if(rows[user1Index].topTrack4==rows[user2Index].topTrack3){
+            overlapTracks.push(rows[user1Index].topTrack4);
+        }
+        if(rows[user1Index].topTrack4==rows[user2Index].topTrack4){
+            overlapTracks.push(rows[user1Index].topTrack4);
+        }
+        if(rows[user1Index].topTrack4==rows[user2Index].topTrack5){
+            overlapTracks.push(rows[user1Index].topTrack4);
+        }
+        if(rows[user1Index].topTrack5==rows[user2Index].topTrack1){
+            overlapTracks.push(rows[user1Index].topTrack5);
+        }
+        if(rows[user1Index].topTrack5==rows[user2Index].topTrack2){
+            overlapTracks.push(rows[user1Index].topTrack5);
+        }
+        if(rows[user1Index].topTrack5==rows[user2Index].topTrack3){
+            overlapTracks.push(rows[user1Index].topTrack5);
+        }
+        if(rows[user1Index].topTrack5==rows[user2Index].topTrack4){
+            overlapTracks.push(rows[user1Index].topTrack5);
+        }
+        if(rows[user1Index].topTrack5==rows[user2Index].topTrack5){
+            overlapTracks.push(rows[user1Index].topTrack5);
+        }
+
+        let overlapData={artists:overlapArtists, genres:'', tracks:overlapTracks};
+        console.log(overlapArtists);
+        console.log(overlapTracks);
+        console.log(overlapData);
+        res.send(overlapData);
+    });
+});
 
 //Set the port that you want the server to run on
 const port = process.env.PORT || 2345;

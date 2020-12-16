@@ -7,7 +7,7 @@ import ThreeDotsWave from './threeDotsWave';
 import axios from 'axios';
 import Nav from './Nav';
 import SharedInsights from './SharedInsights';
-import {BrowserRouter as Router, Switch,Route} from 'react-router-dom';
+import {BrowserRouter as Router, Switch,Route, Redirect} from 'react-router-dom';
 
 
 //connects to sqlite3, opens the spotifyShared.db that contains tables storing pertinent info
@@ -27,7 +27,7 @@ class App extends Component{
     const params= this.getHashParams(); //gives obj that has access and refresh tokens
     this.state={
       loggedIn: params.access_token ? true : false, //checks if access token is set or not to see if logged in 
-      webLogin:'tbd',
+      //webLogin:'tbd',
 
       basicUserInfo:{
         username: 'TBD',
@@ -77,34 +77,44 @@ class App extends Component{
         playlistName:'',
       },
     
-      otherUsers:[]
+      otherUsers:[],
+      numberOfOtherUsers:'',
+      otherSelectedUser:'',
 
-
+      sharedData:{
+        sharedArtist:[],
+        sharedTracks:[],
+        numArtists:'',
+        numTracks:''
+      }
    
      // have view set here
     };
-    this.handleChange=this.handleChange.bind(this);
-    this.handleSubmit=this.handleSubmit.bind(this);
+    //this.handleChange=this.handleChange.bind(this);
+    //this.handleSubmit=this.handleSubmit.bind(this);
+    this.handleChange1=this.handleChange1.bind(this);
+    this.getOverlappingData=this.getOverlappingData.bind(this);
+
     if (params.access_token){
       spotifyWebApi.setAccessToken(params.access_token);
     }
   }
 
-  handleChange(event){
-    console.log(event.target.value); //console logging state can be unreliable bc react doesnt always do things in order
-    this.setState({webLogin: event.target.value});
-  }
-  handleSubmit(event){
-    alert('A name was submitted: ' + this.state.webLogin); //to test and see what value was submitted
+  // handleChange(event){
+  //   console.log(event.target.value); //console logging state can be unreliable bc react doesnt always do things in order
+  //   this.setState({webLogin: event.target.value});
+  // }
+  // handleSubmit(event){
+  //   alert('A name was submitted: ' + this.state.webLogin); //to test and see what value was submitted
    
-    event.preventDefault();
-    axios
-      .post('http://localhost:2345/userWebLogin', this.state.webLogin)
-      .then((res)=> console.log('Username Passed'))
-      .catch(err=>{
-        console.error(err);
-      });
-  }
+  //   event.preventDefault();
+  //   axios
+  //     .post('http://localhost:2345/userWebLogin', this.state.webLogin)
+  //     .then((res)=> console.log('Username Passed'))
+  //     .catch(err=>{
+  //       console.error(err);
+  //     });
+  // }
 
   getHashParams() {
     var hashParams = {};
@@ -125,6 +135,19 @@ class App extends Component{
           image:response.images[0].url
           }
       })
+      axios
+      .get('http://localhost:2345/otherUsers')
+      .then(res=>{
+        console.log(res);
+        let persons=res.data;
+        this.setState({
+          otherUsers:persons,
+          numberOfOtherUsers:persons.length
+        })
+      })
+      .catch(function (err){
+        console.log(err);
+      });
   })
   }
 
@@ -171,7 +194,7 @@ class App extends Component{
       }) 
       //console.log(this.state.nameTopArtist.topArtist1);
       axios
-      .post('http://localhost:2345/userTopArtists', {"username":this.state.webLogin, "firstTopArtist":this.state.nameTopArtist.topArtist1, "secondTopArtist":this.state.nameTopArtist.topArtist2, "thirdTopArtist":this.state.nameTopArtist.topArtist3, "fourthTopArtist":this.state.nameTopArtist.topArtist4, "fifthTopArtist":this.state.nameTopArtist.topArtist5})
+      .post('http://localhost:2345/userTopArtists', {"username":this.state.basicUserInfo.username, "firstTopArtist":this.state.nameTopArtist.topArtist1, "secondTopArtist":this.state.nameTopArtist.topArtist2, "thirdTopArtist":this.state.nameTopArtist.topArtist3, "fourthTopArtist":this.state.nameTopArtist.topArtist4, "fifthTopArtist":this.state.nameTopArtist.topArtist5})
       .catch(err=>{
         console.error(err);
       });
@@ -207,7 +230,7 @@ class App extends Component{
         }
       })
       axios
-      .post('http://localhost:2345/userTopTracks', {"username":this.state.webLogin, "firstTopTrack":this.state.nameTopTracks.topTrack1, "secondTopTrack":this.state.nameTopTracks.topTrack2, "thirdTopTrack":this.state.nameTopTracks.topTrack3, "fourthTopTrack":this.state.nameTopTracks.topTrack4, "fifthTopTrack":this.state.nameTopTracks.topTrack5})
+      .post('http://localhost:2345/userTopTracks', {"username":this.state.basicUserInfo.username, "firstTopTrack":this.state.nameTopTracks.topTrack1, "secondTopTrack":this.state.nameTopTracks.topTrack2, "thirdTopTrack":this.state.nameTopTracks.topTrack3, "fourthTopTrack":this.state.nameTopTracks.topTrack4, "fifthTopTrack":this.state.nameTopTracks.topTrack5})
       .catch(err=>{
         console.error(err);
       });
@@ -230,21 +253,6 @@ class App extends Component{
     })
   }
 
-  getOtherUsers(){
-    axios
-    .get('http://localhost:2345/otherUsers')
-    .then(res=>{
-      console.log(res);
-      let persons=res.data;
-      this.setState({
-        otherUsers:persons
-      })
-    })
-    .catch(function (err){
-      console.log(err);
-    })
-  }
-
   getSuggestedPlaylist(){
     spotifyWebApi.getUserPlaylists()
     .then((response)=>{
@@ -259,23 +267,35 @@ class App extends Component{
     })
   }
 
+  handleChange1(event){
+    console.log(event.target.value); //console logging state can be unreliable bc react doesnt always do things in order
+    this.setState({otherSelectedUser: event.target.value});
+  }
+
+  getOverlappingData(event){
+    event.preventDefault();
+
+    axios
+    .get('http://localhost:2345/overlappingData', {params:{
+      user1:this.state.basicUserInfo.username, //current user (ie: I would be tessjenkins19)
+      user2: this.state.otherSelectedUser  //entered user (ie: tessjenkins19 types in oscrhiber)
+    }})
+    .then(res=>{
+      console.log(res);
+      this.setState({
+        sharedData:{
+          sharedArtist: res.data.artists,
+          sharedTracks:res.data.tracks,
+          numArtists:(res.data.artists).length,
+          numTracks:(res.data.tracks).length
+        }
+      })
+    })
+    .catch(function (err){
+      console.log(err);
+    })
+  }
   
-
-  // getOverlappingData(){
-  //   axios
-  //   .get('http://localhost:2345/overlappingData', {params:{
-  //     user1:this.state.webLogin,
-  //     user2:
-  //   }})
-  //   .then(res=>{
-
-  //   })
-  //   .catch(function (err){
-  //     console.log(err);
-  //   })
-  // }
-  
-
     //in here for checking state in if statements, need to declare shared state in parent component (i think we already do this in the constructor)
  // state is considered to be private to the component that defines it
     //use onClick for user to click when they want to view top artist, genres, compare w other users
@@ -292,27 +312,17 @@ class App extends Component{
       {/* <Route path="/MyInsights" component= {MyInsights} /> */}
       <Route path="/SharedInsights" component= {SharedInsights} />
     
-      <div id='OURwebpageLogin'>
+      {/* <div id='OURwebpageLogin'>
         Enter your spotify username (note that this should NOT be your email)
       <form onSubmit={this.handleSubmit}> 
           <label>
             Username:
             <input type="text" value={this.state.webLogin}  onChange={this.handleChange}/> 
-            {/* target is the input that triggered this function. for diff forms would have dif handleChange functions, handleCHange1, etc */}
+             target is the input that triggered this function. for diff forms would have dif handleChange functions, handleCHange1, etc 
           </label>
           <input type="submit" value="Submit" />
         </form>
-      </div>
-
-      {/* pass form data to back-end,  */}
-
-
-      {/* take form data wrap in form request to back end, back end verify 
-      rather than directly modifying state, 
-      pass to backend, backend pass to front end
-      user hits login. 
-      
-      store data in database in back end */}
+      </div> */}
 
       {/* //use conditional rendering
       //how to change eveythng on site, look at react.js.com
@@ -397,34 +407,55 @@ class App extends Component{
           See your audio features!
         </motion.button> 
       </div>
-
-      <motion.button className="styledButton" onClick={() => this.getOtherUsers()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
+    </div>
+      {/* <motion.button className="styledButton" onClick={() => this.getOtherUsers()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
           See other users!
-        </motion.button> 
+        </motion.button>  */}
         
         {/* to make this neater, maybe some how print out w a for
         loop so that all the names are spaced apart? i dont think you
         can do for loops w html, but i bet theres a way to at least get 
         spaces between. Also realizing this isnt actually what we wanna do
         w the data anyways. will prob just be accessing individually. */}
-
-        <div>{this.state.otherUsers} </div>
-
-        
-        
-
-      </div>
+    </div>
 
         <div>
-        <h3>You share ___ artists, ____ genres, and ____ top tracks </h3>
+        <h3>You share {this.state.sharedData.numArtists} artists, ____ genres, and {this.state.sharedData.numTracks} top tracks </h3>
         </div>
 
       <motion.button className="styledButton"  whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
           See your overall match score!
-        </motion.button> 
+      </motion.button> 
 
+      <div>Other Users: {this.state.otherUsers} </div>
+
+        <form onSubmit={this.getOverlappingData}> 
+          <label>
+            Enter one of the above users to see shared music taste
+            <input type="text" value={this.state.otherSelectedUser} onChange={this.handleChange1}/>  
+            
+            {/* target is the input that triggered this function. for diff forms would have dif handleChange functions, handleCHange1, etc */}
+          </label>
+          <input type="submit" value="Submit" />
+        </form>
+
+        <div>
+          You and {this.state.otherSelectedUser} both listen to music by {this.state.sharedData.sharedArtist} and the song(s){this.state.sharedData.sharedTracks}
+        </div>
+        
+{/* 
+      <div id='OURwebpageLogin'>
+        Enter your spotify username (note that this should NOT be your email)
+      <form onSubmit={this.handleSubmit}> 
+          <label>
+            Username:
+            <input type="text" value={this.state.webLogin}  onChange={this.handleChange}/> 
+            {/* target is the input that triggered this function. for diff forms would have dif handleChange functions, handleCHange1, etc 
+          </label>
+          <input type="submit" value="Submit" />
+        </form>
       </div>
-
+*/}
       <div>  {this.state.playlist.playlistName} </div>
 
       <div>
