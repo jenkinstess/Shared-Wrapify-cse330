@@ -82,6 +82,8 @@ app2.post('/userTopTracks', function(req, res){
     //could close database on logout
 });
 
+//app2.post call for genre
+
 app2.get('/otherUsers', function(req, res){  //confused on /home aspect, may need to change for us
     console.log('Getting Other Users');
     let sqlCall='SELECT * FROM user_info';
@@ -112,6 +114,7 @@ app2.get('/overlappingData', function(req, res){
     let sqlCall='SELECT * FROM user_info ';
     let overlapArtists=[];
     let overlapTracks=[];
+    let overlapGenres=[];
     db_spotifyShared.all(sqlCall,(err, rows)=>{
         if(err){
             console.log(err);
@@ -283,9 +286,89 @@ app2.get('/overlappingData', function(req, res){
             overlapTracks.push(rows[user1Index].topTrack5);
         }
 
-        let overlapData={artists:overlapArtists, genres:'', tracks:overlapTracks};
+        //genres
+        if(rows[user1Index].topGenre1==rows[user2Index].topGenre1){
+            overlapGenres.push(rows[user1Index].topGenre1);
+        }
+        if(rows[user1Index].topGenre1==rows[user2Index].topGenre2){
+            overlapGenres.push(rows[user1Index].topGenre1);
+        }
+        if(rows[user1Index].topGenre1==rows[user2Index].topGenre3){
+            overlapGenres.push(rows[user1Index].topGenre1);
+        }
+        if(rows[user1Index].topGenre1==rows[user2Index].topGenre4){
+            overlapGenres.push(rows[user1Index].topGenre1);
+        }
+        if(rows[user1Index].topGenre1==rows[user2Index].topGenre5){
+            overlapGenres.push(rows[user1Index].topGenre1);
+        }
+        if(rows[user1Index].topGenre2==rows[user2Index].topGenre1){
+            overlapGenres.push(rows[user1Index].topGenre2);
+        }
+        if(rows[user1Index].topGenre2==rows[user2Index].topGenre2){
+            overlapGenres.push(rows[user1Index].topGenre2);
+        }
+        if(rows[user1Index].topGenre2==rows[user2Index].topGenre3){
+            overlapGenres.push(rows[user1Index].topGenre2);
+        }
+        if(rows[user1Index].topGenre2==rows[user2Index].topGenre4){
+            overlapGenres.push(rows[user1Index].topGenre2);
+        }
+        if(rows[user1Index].topGenre2==rows[user2Index].topGenre5){
+            overlapGenres.push(rows[user1Index].topGenre2);
+        }
+        if(rows[user1Index].topGenre3==rows[user2Index].topGenre1){
+            overlapGenres.push(rows[user1Index].topGenre3);
+        }
+        if(rows[user1Index].topGenre3==rows[user2Index].topGenre2){
+            overlapGenres.push(rows[user1Index].topGenre3);
+        }
+        if(rows[user1Index].topGenre3==rows[user2Index].topGenre3){
+            overlapGenres.push(rows[user1Index].topGenre3);
+        }
+        if(rows[user1Index].topGenre3==rows[user2Index].topGenre4){
+            overlapGenres.push(rows[user1Index].topGenre3);
+        }
+        if(rows[user1Index].topGenre3==rows[user2Index].topGenre5){
+            overlapGenres.push(rows[user1Index].topGenre3);
+        }
+        if(rows[user1Index].topGenre4==rows[user2Index].topGenre1){
+            overlapGenres.push(rows[user1Index].topGenre4);
+        }
+        if(rows[user1Index].topGenre4==rows[user2Index].topGenre2){
+            overlapGenres.push(rows[user1Index].topGenre4);
+        }
+        if(rows[user1Index].topGenre4==rows[user2Index].topGenre3){
+            overlapGenres.push(rows[user1Index].topGenre4);
+        }
+        if(rows[user1Index].topGenre4==rows[user2Index].topGenre4){
+            overlapGenres.push(rows[user1Index].topGenre4);
+        }
+        if(rows[user1Index].topGenre4==rows[user2Index].topGenre5){
+            overlapGenres.push(rows[user1Index].topGenre4);
+        }
+        if(rows[user1Index].topGenre5==rows[user2Index].topGenre){
+            overlapGenres.push(rows[user1Index].topGenre5);
+        }
+        if(rows[user1Index].topGenre5==rows[user2Index].topGenre2){
+            overlapGenres.push(rows[user1Index].topGenre5);
+        }
+        if(rows[user1Index].topGenre5==rows[user2Index].topGenre3){
+            overlapGenres.push(rows[user1Index].topGenre5);
+        }
+        if(rows[user1Index].topGenre5==rows[user2Index].topGenre4){
+            overlapGenres.push(rows[user1Index].topGenre5);
+        }
+        if(rows[user1Index].topGenre5==rows[user2Index].topGenre5){
+            overlapGenres.push(rows[user1Index].topGenre5);
+        }
+
+ 
+
+        let overlapData={artists:overlapArtists, genres:overlapGenres, tracks:overlapTracks};
         console.log(overlapArtists);
         console.log(overlapTracks);
+        console.log(overlapGenres);
         console.log(overlapData);
         res.send(overlapData);
     });

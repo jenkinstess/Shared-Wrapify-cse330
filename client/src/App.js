@@ -8,6 +8,7 @@ import axios from 'axios';
 import Nav from './Nav';
 import SharedInsights from './SharedInsights';
 import {BrowserRouter as Router, Switch,Route, Redirect} from 'react-router-dom';
+import BouncingBalls from './BouncingBalls.js';
 
 
 //connects to sqlite3, opens the spotifyShared.db that contains tables storing pertinent info
@@ -28,6 +29,7 @@ class App extends Component{
     this.state={
       loggedIn: params.access_token ? true : false, //checks if access token is set or not to see if logged in 
       //webLogin:'tbd',
+
 
       basicUserInfo:{
         username: 'TBD',
@@ -50,6 +52,14 @@ class App extends Component{
         topArtist3:'',
         topArtist4:'',
         topArtist5:'',
+      },
+
+      nameTopGenres:{
+        topGenre1:'',
+        topGenre2:'',
+        topGenre3:'',
+        topGenre4:'',
+        topGenre5:'',
       },
 
       nameTopTracks:{
@@ -81,11 +91,15 @@ class App extends Component{
       numberOfOtherUsers:'',
       otherSelectedUser:'',
 
+      selectedOption: 'option1',
+
       sharedData:{
         sharedArtist:[],
         sharedTracks:[],
+        //sharedGenres:[]
         numArtists:'',
-        numTracks:''
+        numTracks:'',
+        //numGenres:''
       }
    
      // have view set here
@@ -141,11 +155,7 @@ class App extends Component{
            .catch(err=>{
              console.error(err);
            });
-<<<<<<< HEAD
 
-=======
-      
->>>>>>> e3d87f4ec5ec88a8f2b175ebc2c2b654d2e185a3
       axios
       .get('http://localhost:2345/otherUsers')
       .then(res=>{
@@ -203,6 +213,8 @@ class App extends Component{
           topArtist5: response.items[4].name
         }
       }) 
+
+      
       //console.log(this.state.nameTopArtist.topArtist1);
       axios
       .post('http://localhost:2345/userTopArtists', {"username":this.state.basicUserInfo.username, "firstTopArtist":this.state.nameTopArtist.topArtist1, "secondTopArtist":this.state.nameTopArtist.topArtist2, "thirdTopArtist":this.state.nameTopArtist.topArtist3, "fourthTopArtist":this.state.nameTopArtist.topArtist4, "fifthTopArtist":this.state.nameTopArtist.topArtist5})
@@ -222,6 +234,21 @@ class App extends Component{
     //     console.error(err);
     //   });
   }
+
+  getTopGenres(){  
+    spotifyWebApi.getMyTopArtists()
+    .then((response)=>{
+        this.setState({ //can change any state variables here, change view here
+          nameTopGenres:{
+            topGenre1: response.items[0].genres[0],
+            topGenre2: response.items[1].genres[0],
+            topGenre3: response.items[2].genres[0],
+            topGenre4: response.items[3].genres[0],
+            topGenre5: response.items[4].genres[0],
+          }
+        }) 
+      })
+    }
 
   getTopTracks(){
     spotifyWebApi. getMyTopTracks()
@@ -283,8 +310,16 @@ class App extends Component{
     this.setState({otherSelectedUser: event.target.value});
   }
 
+  handleOptionChange = changeEvent => {
+    this.setState({selectedOption: changeEvent.target.value})
+  }
+
   getOverlappingData(event){
-// last line of handled change ehre
+    handleFormSubmit = formSubmitEvent => {
+      formSubmitEvent.preventDefault();
+    
+      console.log("You have submitted:", this.state.selectedOption);
+    };
 
     event.preventDefault();
 
@@ -292,6 +327,7 @@ class App extends Component{
     .get('http://localhost:2345/overlappingData', {params:{
       user1:this.state.basicUserInfo.username, //current user (ie: I would be tessjenkins19)
       user2: this.state.otherSelectedUser  //entered user (ie: tessjenkins19 types in oscrhiber)
+
     }})
     .then(res=>{
       console.log(res);
@@ -299,8 +335,10 @@ class App extends Component{
         sharedData:{
           sharedArtist: res.data.artists,
           sharedTracks:res.data.tracks,
+          //sharedGenres:res.data.genres,
           numArtists:(res.data.artists).length,
-          numTracks:(res.data.tracks).length
+          numTracks:(res.data.tracks).length,
+          //numGenres:(res.data.genres).length,
         }
       })
     })
@@ -319,9 +357,14 @@ class App extends Component{
     return (  
    <Router>
     
+
     <div className="App">
       <Nav></Nav>
-      <Route path="/" exact component={Home} />
+<div className='Homepage'>
+      <h1> Shared Wrappify</h1>
+    <h3>Compare your music taste with your friends </h3>
+    </div>
+      {/* <Route path="/" exact component={Home} /> */}
       {/* <Route path="/MyInsights" component= {MyInsights} /> */}
       <Route path="/SharedInsights" component= {SharedInsights} />
     
@@ -356,6 +399,7 @@ class App extends Component{
       <Grid>
       <threeDotsWave />
       </Grid>
+      {/* <BouncingBalls></BouncingBalls> */}
       </div>
 
      
@@ -367,6 +411,8 @@ class App extends Component{
         Show Me Me!
       </motion.button> 
 
+   
+
 
     
     <div>Now Playing: {this.state.nowPlaying.name}</div>
@@ -377,11 +423,11 @@ class App extends Component{
         Check Now Playing 
       </motion.button> 
     
-      <div id= '12SavedTracks'>First saved Track: {this.state.savedTracks.nameTrack1}</div>
+      <div id= '12SavedTracks'>Last saved Track: {this.state.savedTracks.nameTrack1}</div>
       {/* <div>Second saved Track: {this.state.savedTracks.nameTrack2}</div> */}
       <div id='butSavedTracks'>
         <motion.button className="styledButton" onClick={() => this.getSavedTracks()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
-          See first saved track!
+          See your latest saved track
         </motion.button> 
       </div>
 
@@ -393,9 +439,21 @@ class App extends Component{
       <div id = 'UsersTopArtists1'> 5: {this.state.nameTopArtist.topArtist5}</div>
       <div id='butTopArtists'>
         <motion.button className="styledButton" onClick={() => this.getTopArtists()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
-          See your top artists!
+          See your top artists
         </motion.button> 
-    
+
+
+        <div id = 'UsersTopArtists'> Your Top Genres:  </div>
+      <div id = 'UsersTopArtists1'> 1: {this.state.nameTopGenres.topGenre1}</div>
+      <div id = 'UsersTopArtists1'> 2: {this.state.nameTopGenres.topGenre2}</div>
+      <div id = 'UsersTopArtists1'> 3: {this.state.nameTopGenres.topGenre3}</div>
+      <div id = 'UsersTopArtists1'> 4: {this.state.nameTopGenres.topGenre4}</div>
+      <div id = 'UsersTopArtists1'> 5: {this.state.nameTopGenres.topGenre5}</div>
+      <div id='butTopGenres'>
+        <motion.button className="styledButton" onClick={() => this.getTopGenres()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
+          See your top genres
+        </motion.button> 
+    </div>
 
         <div id = 'UsersTopTracks'> Your Top Tracks:  </div>
       <div id = 'UsersTopTracks1'> 1: {this.state.nameTopTracks.topTrack1} </div>
@@ -405,7 +463,7 @@ class App extends Component{
       <div id = 'UsersTopTracks5'> 5: {this.state.nameTopTracks.topTrack5} </div>
       <div id='butTopTracks'>
         <motion.button className="styledButton"onClick={() => this.getTopTracks()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
-          See your top tracks!
+          See your top tracks
         </motion.button> 
       </div>
 
@@ -439,6 +497,59 @@ class App extends Component{
       <motion.button className="styledButton"  whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
           See your overall match score!
       </motion.button> 
+
+  {/* radio buttons for selecting users */}
+      <form onSubmit={this.handleFormSubmit}>
+
+<div className="form-check">
+  <label>
+    <input
+      type="radio"
+      name="react-tips"
+      value="option1"
+      checked={this.state.selectedOption == "option1"}
+      onChange={this.handleOptionChange}
+      className="form-check-input"
+    />
+    Option 1
+  </label>
+</div>
+
+<div className="form-check">
+  <label>
+    <input
+      type="radio"
+      name="react-tips"
+      value="option2"
+      checked={this.state.selectedOption == "option2"}
+      onChange={this.handleOptionChange}
+      className="form-check-input"
+    />
+    Option 2
+  </label>
+</div>
+
+<div className="form-check">
+  <label>
+    <input
+      type="radio"
+      name="react-tips"
+      value="option3"
+      checked={this.state.selectedOption == "option3"}
+      onChange={this.handleOptionChange}
+      className="form-check-input"
+    />
+    Option 3
+  </label>
+</div>
+
+<div className="form-group">
+  <button className="btn btn-primary mt-2" type="submit">
+    Compare Music Taste
+  </button>
+</div>
+
+</form>
 
       <div>Other Users: {this.state.otherUsers} </div>
 
@@ -507,11 +618,11 @@ function LoadingBox({ children }) {
 //   console.log('Close the database connection.');
 // });
 
-const Home = () => (
-  <div>
-    <h1> Shared Wrappify</h1>
-    <h3>Compare your music taste with your friends! </h3>
-  </div>
-);
+// const Home = () => (
+//   <div>
+//     <h1 id='Homepage'> Shared Wrappify</h1>
+//     <h3>Compare your music taste with your friends! </h3>
+//   </div>
+// );
 
 export default App;
