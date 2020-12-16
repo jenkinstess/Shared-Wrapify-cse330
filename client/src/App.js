@@ -85,9 +85,11 @@ class App extends Component{
         //playlistId:'',
         playlistImage:'',
         playlistName:'',
+        set:'',
       },
     
       otherUsers:[],
+      otherUsersString:'',
       numberOfOtherUsers:'',
       otherSelectedUser:'',
 
@@ -96,11 +98,14 @@ class App extends Component{
       sharedData:{
         sharedArtist:[],
         sharedTracks:[],
-        //sharedGenres:[]
+        sharedGenres:[],
         numArtists:'',
         numTracks:'',
-        //numGenres:''
-      }
+        numGenres:'',
+        playlist:''
+      },
+
+      matchScore:'',
    
      // have view set here
     };
@@ -129,6 +134,8 @@ class App extends Component{
   //       console.error(err);
   //     });
   // }
+
+  
 
   getHashParams() {
     var hashParams = {};
@@ -161,9 +168,14 @@ class App extends Component{
       .then(res=>{
         console.log(res);
         let persons=res.data;
+        let tempString=" ";
+        for(let i=0; i<persons.length; ++i){
+          tempString+=persons[i] + " ";
+        }
         this.setState({
           otherUsers:persons,
-          numberOfOtherUsers:persons.length
+          numberOfOtherUsers:persons.length,
+          otherUsersString:tempString
         })
       })
       .catch(function (err){
@@ -213,9 +225,6 @@ class App extends Component{
           topArtist5: response.items[4].name
         }
       }) 
-
-      
-      //console.log(this.state.nameTopArtist.topArtist1);
       axios
       .post('http://localhost:2345/userTopArtists', {"username":this.state.basicUserInfo.username, "firstTopArtist":this.state.nameTopArtist.topArtist1, "secondTopArtist":this.state.nameTopArtist.topArtist2, "thirdTopArtist":this.state.nameTopArtist.topArtist3, "fourthTopArtist":this.state.nameTopArtist.topArtist4, "fifthTopArtist":this.state.nameTopArtist.topArtist5})
       .catch(err=>{
@@ -224,29 +233,43 @@ class App extends Component{
     })
 
     //react lifecycles
-
     //asynch await syntax
-    //console.log(this.state.nameTopArtist.topArtist1);
-    // axios
-    //   .post('http://localhost:2345/userTopArtists', {"username":this.state.webLogin, "firstTopArtist":this.state.nameTopArtist.topArtist1, "secondTopArtist":this.state.nameTopArtist.topArtist2, "thirdTopArtist":this.state.nameTopArtist.topArtist3, "fourthTopArtist":this.state.nameTopArtist.topArtist4, "fifthTopArtist":this.state.nameTopArtist.topArtist5})
-    //   .then((res)=> console.log('Top Artists Passed'))
-    //   .catch(err=>{
-    //     console.error(err);
-    //   });
   }
 
   getTopGenres(){  
     spotifyWebApi.getMyTopArtists()
     .then((response)=>{
+      let topGenre2Res=" ";
+      let topGenre3Res=" ";
+      let topGenre4Res=" ";
+      let topGenre5Res=" ";
+      if(response.items[1].genres[0]!=response.items[0].genres[0]){
+        topGenre2Res=response.items[1].genres[0];
+      }
+      if(response.items[2].genres[0]!=response.items[0].genres[0] && response.items[2].genres[0]!=response.items[1].genres[0]){
+        topGenre3Res=response.items[2].genres[0];
+      }
+      if(response.items[3].genres[0]!=response.items[0].genres[0] && response.items[3].genres[0]!=response.items[1].genres[0] && response.items[3].genres[0]!=response.items[2].genres[0]){
+        topGenre4Res=response.items[3].genres[0];
+      }
+      if(response.items[4].genres[0]!=response.items[0].genres[0] && response.items[4].genres[0]!=response.items[1].genres[0] && response.items[4].genres[0]!=response.items[2].genres[0] && response.items[4].genres[0]!=response.items[3].genres[0]){
+        topGenre5Res=response.items[4].genres[0];
+      }
+      
         this.setState({ //can change any state variables here, change view here
           nameTopGenres:{
             topGenre1: response.items[0].genres[0],
-            topGenre2: response.items[1].genres[0],
-            topGenre3: response.items[2].genres[0],
-            topGenre4: response.items[3].genres[0],
-            topGenre5: response.items[4].genres[0],
+            topGenre2: topGenre2Res,
+            topGenre3: topGenre3Res,
+            topGenre4: topGenre4Res,
+            topGenre5: topGenre5Res,
           }
         }) 
+      axios
+      .post('http://localhost:2345/userTopGenres', {"username":this.state.basicUserInfo.username, "firstTopGenre":this.state.nameTopGenres.topGenre1, "secondTopGenre":this.state.nameTopGenres.topGenre2, "thirdTopGenre":this.state.nameTopGenres.topGenre3, "fourthTopGenre":this.state.nameTopGenres.topGenre4, "fifthTopGenre":this.state.nameTopGenres.topGenre5})
+      .catch(err=>{
+        console.error(err);
+      });
       })
     }
 
@@ -267,12 +290,14 @@ class App extends Component{
           topTrack5id: response.items[4].id,
         }
       })
+
       axios
       .post('http://localhost:2345/userTopTracks', {"username":this.state.basicUserInfo.username, "firstTopTrack":this.state.nameTopTracks.topTrack1, "secondTopTrack":this.state.nameTopTracks.topTrack2, "thirdTopTrack":this.state.nameTopTracks.topTrack3, "fourthTopTrack":this.state.nameTopTracks.topTrack4, "fifthTopTrack":this.state.nameTopTracks.topTrack5})
       .catch(err=>{
         console.error(err);
       });
     })
+
   }
 
 
@@ -289,20 +314,53 @@ class App extends Component{
         }
       }) 
     })
+    spotifyWebApi.getUserPlaylists()
+      .then((response)=>{
+        this.setState({ 
+          playlist:{
+            //playlistId: response.items[0].id,
+            playlistImage: response.items[2].images[0].url,
+            playlistName:response.items[2].name
+
+          }
+        }) 
+        console.log(this.state.playlist.playlistName);
+        axios
+        .post('http://localhost:2345/userPlaylist', {"username":this.state.basicUserInfo.username, "playlistName":this.state.playlist.playlistName})
+        .catch(err=>{
+          console.error(err);
+        });
+      })
   }
 
   getSuggestedPlaylist(){
-    spotifyWebApi.getUserPlaylists()
-    .then((response)=>{
-      this.setState({ 
-        playlist:{
-          //playlistId: response.items[0].id,
-          playlistImage: response.items[2].images[0].url,
-          playlistName:response.items[2].name
+    if((this.state.sharedData.sharedArtist).length>0){
+      
+      axios
+      .get('http://localhost:2345/suggestedPlaylist', {params:{ 
+        user1: this.state.otherSelectedUser  //entered user (ie: tessjenkins19 types in oscrhiber)
 
+      }})
+      .then(res=>{
+        console.log(res);
+        this.setState({
+          sharedData:{
+            playlist:res.data
+          }
+        })
+      })
+      .catch(function (err){
+        console.log(err);
+      })
+    }
+    else{
+      this.setState({
+        playlist:{
+          set:'Users have no shared artists, so no playlists can be suggested'
         }
-      }) 
-    })
+      })
+    }
+    
   }
 
   handleChange1(event){
@@ -310,16 +368,16 @@ class App extends Component{
     this.setState({otherSelectedUser: event.target.value});
   }
 
-  handleOptionChange = changeEvent => {
-    this.setState({selectedOption: changeEvent.target.value})
-  }
+  // handleOptionChange = changeEvent => {
+  //   this.setState({selectedOption: changeEvent.target.value})
+  // }
 
   getOverlappingData(event){
-    handleFormSubmit = formSubmitEvent => {
-      formSubmitEvent.preventDefault();
+    // handleFormSubmit = formSubmitEvent => {
+    //   formSubmitEvent.preventDefault();
     
-      console.log("You have submitted:", this.state.selectedOption);
-    };
+    //   console.log("You have submitted:", this.state.selectedOption);
+    // };
 
     event.preventDefault();
 
@@ -335,10 +393,10 @@ class App extends Component{
         sharedData:{
           sharedArtist: res.data.artists,
           sharedTracks:res.data.tracks,
-          //sharedGenres:res.data.genres,
+          sharedGenres:res.data.genres,
           numArtists:(res.data.artists).length,
           numTracks:(res.data.tracks).length,
-          //numGenres:(res.data.genres).length,
+          numGenres:(res.data.genres).length,
         }
       })
     })
@@ -346,7 +404,16 @@ class App extends Component{
       console.log(err);
     })
   }
-  
+
+  getOverallMatchScore(){
+    let score=((this.state.sharedData.sharedArtist).length+(this.state.sharedData.sharedTracks).length+(this.state.sharedData.sharedGenres).length)/(15);
+    let percentscore=score*100;
+    let match=percentscore+"%";
+    this.setState({
+      matchScore:match
+    })
+    console.log(match);
+  }
     //in here for checking state in if statements, need to declare shared state in parent component (i think we already do this in the constructor)
  // state is considered to be private to the component that defines it
     //use onClick for user to click when they want to view top artist, genres, compare w other users
@@ -433,22 +500,22 @@ class App extends Component{
 
       <div id = 'UsersTopArtists'> Your Top Artists:  </div>
       <div id = 'UsersTopArtists1'> 1: {this.state.nameTopArtist.topArtist1}</div>
-      <div id = 'UsersTopArtists1'> 2: {this.state.nameTopArtist.topArtist2}</div>
-      <div id = 'UsersTopArtists1'> 3: {this.state.nameTopArtist.topArtist3}</div>
-      <div id = 'UsersTopArtists1'> 4: {this.state.nameTopArtist.topArtist4}</div>
-      <div id = 'UsersTopArtists1'> 5: {this.state.nameTopArtist.topArtist5}</div>
+      <div id = 'UsersTopArtists2'> 2: {this.state.nameTopArtist.topArtist2}</div>
+      <div id = 'UsersTopArtists3'> 3: {this.state.nameTopArtist.topArtist3}</div>
+      <div id = 'UsersTopArtists4'> 4: {this.state.nameTopArtist.topArtist4}</div>
+      <div id = 'UsersTopArtists5'> 5: {this.state.nameTopArtist.topArtist5}</div>
       <div id='butTopArtists'>
         <motion.button className="styledButton" onClick={() => this.getTopArtists()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
           See your top artists
         </motion.button> 
 
 
-        <div id = 'UsersTopArtists'> Your Top Genres:  </div>
-      <div id = 'UsersTopArtists1'> 1: {this.state.nameTopGenres.topGenre1}</div>
-      <div id = 'UsersTopArtists1'> 2: {this.state.nameTopGenres.topGenre2}</div>
-      <div id = 'UsersTopArtists1'> 3: {this.state.nameTopGenres.topGenre3}</div>
-      <div id = 'UsersTopArtists1'> 4: {this.state.nameTopGenres.topGenre4}</div>
-      <div id = 'UsersTopArtists1'> 5: {this.state.nameTopGenres.topGenre5}</div>
+        <div id = 'UsersTopGenres'> Your Top Genres:  </div>
+      <div id = 'UsersTopGenres1'> 1: {this.state.nameTopGenres.topGenre1}</div>
+      <div id = 'UsersTopGenres2'> 2: {this.state.nameTopGenres.topGenre2}</div>
+      <div id = 'UsersTopGenres3'> 3: {this.state.nameTopGenres.topGenre3}</div>
+      <div id = 'UsersTopGenres4'> 4: {this.state.nameTopGenres.topGenre4}</div>
+      <div id = 'UsersTopGenres5'> 5: {this.state.nameTopGenres.topGenre5}</div>
       <div id='butTopGenres'>
         <motion.button className="styledButton" onClick={() => this.getTopGenres()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
           See your top genres
@@ -490,68 +557,61 @@ class App extends Component{
         w the data anyways. will prob just be accessing individually. */}
     </div>
 
-        <div>
-        <h3>You share {this.state.sharedData.numArtists} artists, ____ genres, and {this.state.sharedData.numTracks} top tracks </h3>
-        </div>
-
-      <motion.button className="styledButton"  whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
-          See your overall match score!
-      </motion.button> 
 
   {/* radio buttons for selecting users */}
-      <form onSubmit={this.handleFormSubmit}>
+          {/* <form onSubmit={this.handleFormSubmit}>
 
-<div className="form-check">
-  <label>
-    <input
-      type="radio"
-      name="react-tips"
-      value="option1"
-      checked={this.state.selectedOption == "option1"}
-      onChange={this.handleOptionChange}
-      className="form-check-input"
-    />
-    Option 1
-  </label>
-</div>
+    <div className="form-check">
+      <label>
+        <input
+          type="radio"
+          name="react-tips"
+          value="option1"
+          checked={this.state.selectedOption == "option1"}
+          onChange={this.handleOptionChange}
+          className="form-check-input"
+        />
+        Option 1
+      </label>
+    </div>
 
-<div className="form-check">
-  <label>
-    <input
-      type="radio"
-      name="react-tips"
-      value="option2"
-      checked={this.state.selectedOption == "option2"}
-      onChange={this.handleOptionChange}
-      className="form-check-input"
-    />
-    Option 2
-  </label>
-</div>
+    <div className="form-check">
+      <label>
+        <input
+          type="radio"
+          name="react-tips"
+          value="option2"
+          checked={this.state.selectedOption == "option2"}
+          onChange={this.handleOptionChange}
+          className="form-check-input"
+        />
+        Option 2
+      </label>
+    </div>
 
-<div className="form-check">
-  <label>
-    <input
-      type="radio"
-      name="react-tips"
-      value="option3"
-      checked={this.state.selectedOption == "option3"}
-      onChange={this.handleOptionChange}
-      className="form-check-input"
-    />
-    Option 3
-  </label>
-</div>
+    <div className="form-check">
+      <label>
+        <input
+          type="radio"
+          name="react-tips"
+          value="option3"
+          checked={this.state.selectedOption == "option3"}
+          onChange={this.handleOptionChange}
+          className="form-check-input"
+        />
+        Option 3
+      </label>
+    </div>
 
-<div className="form-group">
-  <button className="btn btn-primary mt-2" type="submit">
-    Compare Music Taste
-  </button>
-</div>
+    <div className="form-group">
+      <button className="btn btn-primary mt-2" type="submit">
+        Compare Music Taste
+      </button>
+    </div>
 
-</form>
+    </form> */}
 
-      <div>Other Users: {this.state.otherUsers} </div>
+      <div>Other Users: {this.state.otherUsersString} </div>
 
         <form onSubmit={this.getOverlappingData}> 
           <label>
@@ -563,9 +623,23 @@ class App extends Component{
           <input type="submit" value="Submit" />
         </form>
 
+        <b>HEY JAMIE IF THERE IS ANYWAY YOU COULD GET SPACING BETWEEN THE DATA IN SHAREDARTIST SIMILAR TO HOW WE DID IT FOR DISPLAYING THE USERNAMES THAT WOULD BE SUPERB :))))</b>
+        <div>just bc when i run this for tessjenkins19 and user megan2033 we share 2 artists and there is no space between.</div>
+        <b>THIS IS TOTALLY LOW PRIORITY THO, DONT REALLY MATTER</b>
         <div>
-          You and {this.state.otherSelectedUser} both listen to music by {this.state.sharedData.sharedArtist} and the song(s){this.state.sharedData.sharedTracks}
+          You and {this.state.otherSelectedUser} both listen to music by {this.state.sharedData.sharedArtist}, the song(s){this.state.sharedData.sharedTracks}, and the genre(s) {this.state.sharedData.sharedGenres}
         </div>
+
+        <div>
+        <h3>You and {this.state.otherSelectedUser} share {this.state.sharedData.numArtists} artists, {this.state.sharedData.numGenres} genres, and {this.state.sharedData.numTracks} top tracks </h3>
+        </div>
+      <p>
+        Score: {this.state.matchScore}
+      </p>
+      <motion.button className="styledButton"  onClick={()=> this.getOverallMatchScore()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
+         See your overall match score with {this.state.otherSelectedUser}!
+      </motion.button> 
+      
         
 {/* 
       <div id='OURwebpageLogin'>
@@ -579,11 +653,11 @@ class App extends Component{
           <input type="submit" value="Submit" />
         </form>
       </div>
-*/}
-      <div>  {this.state.playlist.playlistName} </div>
-
+*/} 
+      <div>{this.state.playlist.set}</div>
+      <div>  {this.state.sharedData.playlist} </div>
       <div>
-        <img src={this.state.playlist.playlistImage} style={{width: 250}}/>
+        {/* <img src={this.state.playlist.playlistImage} style={{width: 250}}/> */}
      
         <motion.button className="styledButton" onClick={() => this.getSuggestedPlaylist()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
           Suggest a playlist!

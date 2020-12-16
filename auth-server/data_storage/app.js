@@ -83,6 +83,36 @@ app2.post('/userTopTracks', function(req, res){
 });
 
 //app2.post call for genre
+app2.post('/userTopGenres', function(req, res){
+
+    let sqlCall='UPDATE user_info SET topGenre1=(?), topGenre2=(?), topGenre3=(?), topGenre4=(?), topGenre5=(?) WHERE username=(?)';
+    let sqlData=[req.body.firstTopGenre, req.body.secondTopGenre, req.body.thirdTopGenre, req.body.fourthTopGenre, req.body.fifthTopGenre, req.body.username];
+
+    db_spotifyShared.run(sqlCall, sqlData, function(err){
+      if(err){
+        return console.log(err.message);
+      }
+      console.log(`A row has been updated with rowid ${this.lastID}`);
+    });
+    //db_spotifyShared.close();
+    //could close database on logout
+});
+
+app2.post('/userPlaylist', function(req, res){
+
+    let sqlCall='UPDATE user_info SET playlist=(?) WHERE username=(?)';
+    let sqlData=[req.body.playlistName, req.body.username];
+    console.log(req.body.playlistName);
+
+    db_spotifyShared.run(sqlCall, sqlData, function(err){
+      if(err){
+        return console.log(err.message);
+      }
+      console.log(`A row has been updated with rowid ${this.lastID}`);
+    });
+    //db_spotifyShared.close();
+    //could close database on logout
+});
 
 app2.get('/otherUsers', function(req, res){  //confused on /home aspect, may need to change for us
     console.log('Getting Other Users');
@@ -362,15 +392,42 @@ app2.get('/overlappingData', function(req, res){
         if(rows[user1Index].topGenre5==rows[user2Index].topGenre5){
             overlapGenres.push(rows[user1Index].topGenre5);
         }
-
- 
-
-        let overlapData={artists:overlapArtists, genres:overlapGenres, tracks:overlapTracks};
+        
+        let updatedOverlapGenres=[];
+        for(let i=0; i<overlapGenres.length; ++i){
+            for(let ii=1; ii<overlapGenres.length; ++ii){
+                if(overlapGenres[i]==overlapGenres[ii]){
+                    updatedOverlapGenres=overlapGenres.slice(0,ii).concat(overlapGenres.slice(ii+1, overlapGenres.length));
+                }
+            }
+        }
+        let overlapData={artists:overlapArtists, genres:updatedOverlapGenres, tracks:overlapTracks};
         console.log(overlapArtists);
         console.log(overlapTracks);
-        console.log(overlapGenres);
+        console.log(updatedOverlapGenres);
         console.log(overlapData);
         res.send(overlapData);
+    });
+});
+
+app2.get('/suggestedPlaylist', function(req, res){  
+    console.log('Comparing users info');
+    let user1=req.query.user1;
+    let user1Index;
+    let sqlCall='SELECT * FROM user_info ';
+    db_spotifyShared.all(sqlCall,(err, rows)=>{
+        if(err){
+            console.log(err);
+        }
+
+        for(let i=0; i<rows.length; ++i){
+            if(user1==rows[i].username){
+                user1Index=i;
+            }
+        }
+        console.log("user1Index=" + user1Index);
+        
+        res.send(rows[user1Index].playlist);
     });
 });
 
