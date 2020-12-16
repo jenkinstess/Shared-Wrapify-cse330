@@ -141,7 +141,7 @@ class App extends Component{
            .catch(err=>{
              console.error(err);
            });
-           
+
       axios
       .get('http://localhost:2345/otherUsers')
       .then(res=>{
