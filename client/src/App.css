@@ -156,26 +156,20 @@ nav{
   font-weight: bold;
 }
 
-.ball{
+.ball1{
   background-color: #ff1a66;
   height: 200px;
   width: 200px;
   border-radius: 50%;
-  position: relative;
-  top: 800px;
+  position: absolute;
+  top: 400px;
   left: 800px;
   animation: bounce 6s infinite;
 }
 
 @keyframes bounce{
-  0%, 100% {
-    bottom: 0px;
-  }
-  50% {
-    bottom: 100px;
-  }
-}
-  /* 10%{
+
+  10%{
     height: 50px;
     width: 50px;
   }
@@ -188,7 +182,7 @@ nav{
   50%{
     height: 50px;
     width: 50px;
-    transform: translateY(240px);
+    transform: translateY(120px);
   }
 
   75%{
@@ -197,4 +191,54 @@ nav{
   }
   100%{
     transform: translateY(0px);
-  } */
+  }
+}
+
+.ball2{
+  background-color: #1ab2bd;
+  height: 300px;
+  width: 300px;
+  border-radius: 50%;
+  position: absolute;
+  top: 200px;
+  left: 900px;
+  animation: bounce2 6s infinite;
+}
+
+.ball3{
+  background-color: #f1842a;
+  height: 400px;
+  width: 400px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50px;
+  left: 750px;
+  animation: bounce2 6s infinite;
+}
+
+@keyframes bounce2{
+
+  10%{
+    height: 50px;
+    width: 50px;
+  }
+
+  30%{
+    height: 50px;
+    width: 50px;
+  }
+
+  50%{
+    height: 50px;
+    width: 50px;
+    transform: translateY(120px);
+  }
+
+  75%{
+    height: 50px;
+    width: 50px;
+  }
+  100%{
+    transform: translateY(0px);
+  }
+}

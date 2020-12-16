@@ -425,9 +425,19 @@ class App extends Component{
    <Router>
     
       <div className='container'>
-        <div className="ball">
-          
+
+        <div className="ball1">
         </div>
+
+        </div>
+        <div className='container'>
+        <div className="ball2"> 
+      </div>
+      </div>
+
+      <div className='container'>
+        <div className="ball3"> 
+      </div>
       </div>
     <div className="App">
       <Nav></Nav>
@@ -479,7 +489,7 @@ class App extends Component{
         <img src={this.state.basicUserInfo.image} style={{width: 250}}/>
       </div>
       <motion.button className="styledButton" onClick={() => this.getBasicUserInfo()}  whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}} >
-        Show Me Me!
+        Show Me Me
       </motion.button> 
 
    
@@ -546,7 +556,7 @@ class App extends Component{
       <div id='butAudioFeaturesForTracks'> Loudness:{this.state.audioFeatures.loudness} </div>
       <div id='butAudioFeatures'>
         <motion.button className="styledButton" onClick={() => this.getAudioFeatures()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
-          See your audio features!
+          See your audio features
         </motion.button> 
       </div>
     </div>
@@ -559,7 +569,7 @@ class App extends Component{
         can do for loops w html, but i bet theres a way to at least get 
         spaces between. Also realizing this isnt actually what we wanna do
         w the data anyways. will prob just be accessing individually. */}
-    </div>
+    
 
 
   {/* radio buttons for selecting users */}
@@ -627,9 +637,7 @@ class App extends Component{
           <input type="submit" value="Submit" />
         </form>
 
-        <b>HEY JAMIE IF THERE IS ANYWAY YOU COULD GET SPACING BETWEEN THE DATA IN SHAREDARTIST SIMILAR TO HOW WE DID IT FOR DISPLAYING THE USERNAMES THAT WOULD BE SUPERB :))))</b>
-        <div>just bc when i run this for tessjenkins19 and user megan2033 we share 2 artists and there is no space between.</div>
-        <b>THIS IS TOTALLY LOW PRIORITY THO, DONT REALLY MATTER</b>
+
         <div>
           You and {this.state.otherSelectedUser} both listen to music by {this.state.sharedData.sharedArtist}, the song(s){this.state.sharedData.sharedTracks}, and the genre(s) {this.state.sharedData.sharedGenres}
         </div>
@@ -641,10 +649,10 @@ class App extends Component{
         Score: {this.state.matchScore}
       </p>
       <motion.button className="styledButton"  onClick={()=> this.getOverallMatchScore()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
-         See your overall match score with {this.state.otherSelectedUser}!
+         See your overall match score with {this.state.otherSelectedUser}
       </motion.button> 
       
-        
+
 {/* 
       <div id='OURwebpageLogin'>
         Enter your spotify username (note that this should NOT be your email)
@@ -664,8 +672,9 @@ class App extends Component{
         {/* <img src={this.state.playlist.playlistImage} style={{width: 250}}/> */}
      
         <motion.button className="styledButton" onClick={() => this.getSuggestedPlaylist()} whileHover={{scale: 1.1, textShadow: "0px 0px 8px rgb(255,255,255)",boxShadow: "0px 0px 8px rgb(255,255,255)"}}>
-          Suggest a playlist!
+          Suggest a playlist
         </motion.button> 
+        </div>
         </div>
 
       </Router>

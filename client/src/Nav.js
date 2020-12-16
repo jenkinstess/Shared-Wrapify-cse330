@@ -10,8 +10,8 @@ function Nav() {
            <ThreeDotsWave></ThreeDotsWave>
            <ul className="nav-links"> 
                 <li>Home</li>
-                <li>My Insights</li>
-                <li>Shared Insights</li>
+                {/* <li>My Insights</li> */}
+                {/* <li>Shared Insights</li> */}
 
             </ul>
        </nav>
